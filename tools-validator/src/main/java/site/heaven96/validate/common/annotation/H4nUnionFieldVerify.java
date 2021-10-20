@@ -1,7 +1,6 @@
 package site.heaven96.validate.common.annotation;
 
 
-import org.springframework.core.annotation.Order;
 import site.heaven96.validate.common.annotation.mutil.H4nFieldRequireVerifies;
 import site.heaven96.validate.common.enums.RequireRule;
 import site.heaven96.validate.common.enums.ValueSetOrigin;
@@ -26,7 +25,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 @Constraint(validatedBy = FieldRequireValidtor.class)
 @Repeatable(H4nFieldRequireVerifies.class)
-@Order(9998)
 public @interface H4nUnionFieldVerify {
     /**
      * 待验证字段

@@ -3,7 +3,7 @@ package site.heaven96;
 import cn.hutool.core.lang.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.junit.runners.BlockJUnit4ClassRunner;
 import site.heaven96.validate.common.enums.Operator;
 import site.heaven96.validate.util.H4nAnalysisUtil;
 import site.heaven96.validate.util.H4nCompareUtil;
@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(BlockJUnit4ClassRunner.class)
 //@ContextConfiguration(locations = { "classpath:applicationContext.xml" })
 public class ToolsValidatorApplicationTests {
 

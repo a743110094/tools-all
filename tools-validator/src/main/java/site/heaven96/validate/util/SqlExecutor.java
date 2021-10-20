@@ -4,7 +4,6 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.db.Db;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.logging.log4j.util.Strings;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -67,7 +66,7 @@ public class SqlExecutor {
         } catch (SQLException e) {
             log.error(ERR_MSG_TEMPLATE, Thread.currentThread().getStackTrace()[1].getMethodName(), sql, args, e.getMessage());
             e.printStackTrace();
-            return Strings.EMPTY;
+            return "";
         }
     }
 

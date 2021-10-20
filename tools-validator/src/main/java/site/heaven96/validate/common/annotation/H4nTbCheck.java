@@ -1,6 +1,5 @@
 package site.heaven96.validate.common.annotation;
 
-import org.springframework.core.annotation.Order;
 import site.heaven96.validate.common.annotation.mutil.H4nTbChecks;
 import site.heaven96.validate.common.enums.TbCheck;
 import site.heaven96.validate.common.validtor.H3cTbCheckValidtor;
@@ -24,7 +23,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 @Constraint(validatedBy = H3cTbCheckValidtor.class)
 @Repeatable(H4nTbChecks.class)
-@Order(9999)
 public @interface H4nTbCheck {
 
     /**

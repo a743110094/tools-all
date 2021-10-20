@@ -5,7 +5,6 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.*;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import site.heaven96.validate.common.constant.ValidtorConstants;
 import site.heaven96.validate.common.enums.*;
@@ -27,7 +26,6 @@ import static site.heaven96.validate.common.constant.ValidtorConstants.TB_PARAMS
  * @date 2021/10/08
  */
 @Slf4j(topic = "【H3C数据验证服务】")
-@Service
 public class H3cWmsValidateServiceImpl implements H3cWmsValidateService {
 
 

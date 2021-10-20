@@ -2,8 +2,8 @@ package site.heaven96.validate.common.validtor;
 
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.ReflectUtil;
+import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.util.ObjectUtils;
 import site.heaven96.validate.common.annotation.H4nFieldCheck;
 import site.heaven96.validate.common.enums.Operator;
 import site.heaven96.validate.common.enums.TypeCheckRule;

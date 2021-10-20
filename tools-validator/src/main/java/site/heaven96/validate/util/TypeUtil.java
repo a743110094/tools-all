@@ -9,7 +9,6 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.logging.log4j.util.Strings;
 import org.beetl.sql.annotation.entity.AssignID;
 import org.beetl.sql.annotation.entity.AutoID;
 import org.beetl.sql.annotation.entity.SeqID;
@@ -47,8 +46,8 @@ public class TypeUtil {
      */
     public static Map<String, String> getEntitySchemaAndTable(Class<?> clazz) {
         Map<String, String> map = new ConcurrentHashMap<>();
-        String schemaName = Strings.EMPTY;
-        String tableName = Strings.EMPTY;
+        String schemaName = "";
+        String tableName = "";
         //-----------------  先看声明的表名   含Mybatis Plus 和 BeetlSql两个框架
         try {
             //MybatisPlus
@@ -121,7 +120,7 @@ public class TypeUtil {
 
             }
         }
-        return Strings.EMPTY;
+        return "";
     }
 
     /**
@@ -148,7 +147,7 @@ public class TypeUtil {
                 return field.getName();
             }
         }
-        return Strings.EMPTY;
+        return "";
     }
 
     /**

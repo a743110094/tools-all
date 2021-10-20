@@ -1,6 +1,5 @@
 package site.heaven96.validate.util;
 
-import org.assertj.core.util.Arrays;
 import site.heaven96.validate.common.enums.Operator;
 import site.heaven96.validate.lang.handler.operator.*;
 
@@ -23,7 +22,7 @@ public class H4nAnalysisUtil {
         AbstractFixedValueAbstractHandler handler6 = new AbstractEqualsHandler() {
             @Override
             public boolean subHandle(Object obj, Operator operator, String standardVal) {
-                return this.handle(obj, operator, Arrays.array(standardVal));
+                return this.handle(obj, operator, new String[]{standardVal});
             }
         };
         AbstractFixedValueAbstractHandler handler7 = new AbstractBetweenAndHandler() {
