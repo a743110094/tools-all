@@ -12,7 +12,7 @@
     </parent>-->
     <groupId>site.heaven96</groupId>
     <artifactId>tools-validator</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>tools-validator</name>
     <url>https://github.com/a743110094/tools-all/</url>
@@ -177,7 +177,7 @@
         <tag>tools-validator-0.0.1</tag>
         <url>https://github.com/a743110094/tools-all/</url>
         <connection>scm:git:https://github.com/a743110094/tools-all.git</connection>
-        <developerConnection>scm:git:git@github.com:a743110094</developerConnection>
+        <developerConnection>scm:git:git@github.com:a743110094:tools-all.git</developerConnection>
     </scm>
 
     <developers>
