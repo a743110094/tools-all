@@ -1,4 +1,4 @@
-package site.heaven96;
+package site.heaven96.example;
 
 import cn.hutool.core.lang.Assert;
 import org.junit.Test;

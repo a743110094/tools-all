@@ -16,7 +16,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>tools-validator</name>
-    <url>https://github.com/my-dlq/swagger-kubernetes</url>
+    <url>https://github.com/a743110094/tools-all/</url>
     <description>tools-validator</description>
     <properties>
         <java.version>1.8</java.version>
@@ -32,11 +32,6 @@
             <artifactId>slf4j-api</artifactId>
             <version>1.7.30</version>
         </dependency>
-        <!--<dependency>
-            <groupId>jakarta.validation</groupId>
-            <artifactId>jakarta.validation-api</artifactId>
-            <version>2.0.2</version>
-        </dependency>-->
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
@@ -58,91 +53,88 @@
             <version>3.10.1-RELEASE</version>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-expression</artifactId>
-        </dependency>
-        <!--<dependency>
-            <groupId>com.github.wvengen</groupId>
-            <artifactId>proguard-maven-plugin</artifactId>
-            <version>2.5.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-source-plugin</artifactId>
-            <version>3.2.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.3.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-gpg-plugin</artifactId>
-            <version>3.0.1</version>
-        </dependency>-->
-        <dependency>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-deploy-plugin</artifactId>
-            <version>3.0.0-M1</version>
+            <version>5.2.3.RELEASE</version>
         </dependency>
     </dependencies>
 
     <build>
         <plugins>
-            <!-- java编译插件 -->
-
-
-
-
-
-
-            <!-- Source -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.3.4.RELEASE</version>
+                <configuration>
+                    <excludes>
+                        <exclude>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.7</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>oss</serverId>
+                    <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>false</autoReleaseAfterClose>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>3.2.1</version>
+                <version>3.0.1</version>
                 <executions>
                     <execution>
-                        <phase>package</phase>
+                        <id>attach-sources</id>
                         <goals>
                             <goal>jar-no-fork</goal>
                         </goals>
                     </execution>
                 </executions>
             </plugin>
-            <!-- Javadoc -->
-<!--            <plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>3.3.1</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                        <configuration>
-                            <doclint>none</doclint>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>-->
-            <!-- GPG -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-gpg-plugin</artifactId>
-                <version>1.6</version>
                 <configuration>
-                    <useAgent>false</useAgent>
+                    <failOnError>false</failOnError>
+                    <doclint>none</doclint>
                 </configuration>
                 <executions>
                     <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <phase>package</phase>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- release plugin,用于发布到release仓库部署插件 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.3</version>
+                <configuration>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                    <useReleaseProfile>false</useReleaseProfile>
+                    <releaseProfiles>release</releaseProfiles>
+                    <goals>deploy</goals>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.5</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
                         <phase>verify</phase>
                         <goals>
                             <goal>sign</goal>
@@ -150,117 +142,23 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- Nexus Staging Maven -->
-          <!--  <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>1.6.2</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <serverId>oss</serverId>
-                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
-                </configuration>
-            </plugin>-->
-
-
-
-
-
-
-
-<!--
             <plugin>
-                <groupId>com.github.wvengen</groupId>
-                <artifactId>proguard-maven-plugin</artifactId>
-                <version>2.5.1</version>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>1.0.0</version>
+                <configuration>
+                    <flattenMode>minimum</flattenMode>
+                </configuration>
                 <executions>
                     <execution>
-                        &lt;!&ndash; 混淆时刻，这里是打包的时候混淆&ndash;&gt;
-                        <phase>package</phase>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
                         <goals>
-                            &lt;!&ndash; 使用插件的什么功能: 混淆&ndash;&gt;
-                            <goal>proguard</goal>
+                            <goal>flatten</goal>
                         </goals>
                     </execution>
                 </executions>
-                <configuration>
-                    &lt;!&ndash; 是否将生成的PG文件安装部署&ndash;&gt;
-                    <attach>true</attach>
-                    &lt;!&ndash; 是否混淆&ndash;&gt;
-                    <obfuscate>true</obfuscate>
-                    &lt;!&ndash; 指定生成文件分类 &ndash;&gt;
-                    <attachArtifactClassifier>pg</attachArtifactClassifier>
-                    <options>
-                        &lt;!&ndash; JDK目标版本1.8&ndash;&gt;
-                        <option>-target 1.8</option>
-                        &lt;!&ndash; 不做收缩（删除注释、未被引用代码）&ndash;&gt;
-                        <option>-dontshrink</option>
-                        &lt;!&ndash; 不做优化（变更代码实现逻辑）&ndash;&gt;
-                        <option>-dontoptimize</option>
-                        &lt;!&ndash; 不路过非公用类文件及成员&ndash;&gt;
-                        <option>-dontskipnonpubliclibraryclasses</option>
-                        <option>-dontskipnonpubliclibraryclassmembers</option>
-                        &lt;!&ndash; 优化时允许访问并修改有修饰符的类和类的成员 &ndash;&gt;
-                        <option>-allowaccessmodification</option>
-                        &lt;!&ndash; 确定统一的混淆类的成员名称来增加混淆&ndash;&gt;
-                        <option>-useuniqueclassmembernames</option>
-
-                        &lt;!&ndash;保证spring注解能力&ndash;&gt;
-                        &lt;!&ndash;<option>&#45;&#45;keepdirectories</option>&ndash;&gt;
-
-                        &lt;!&ndash; 不混淆所有包名，本人测试混淆后WEB项目问题实在太多，毕竟Spring配置中有大量固定写法的包名&ndash;&gt;
-                        <option>-keeppackagenames</option>
-                        &lt;!&ndash; 不混淆所有特殊的类&ndash;&gt;
-                        <option>-keepattributes
-                            Exceptions,InnerClasses,Signature,Deprecated,SourceFile,LineNumberTable,LocalVariable*Table,*Annotation*,Synthetic,EnclosingMethod
-                        </option>
-                        &lt;!&ndash; 不混淆所有的set/get方法，毕竟项目中使用的部分第三方框架（例如Shiro）会用到大量的set/get映射&ndash;&gt;
-                        <option>-keepclassmembers public class * {void set*(***);*** get*();}</option>
-
-                        &lt;!&ndash; 不混淆commonmodel，model包中的所有类以及类的属性及方法，实体包，混淆了会导致前端无法识别&ndash;&gt;
-                        <option>-keep class com.xxx.web.commonmodel.** {*;}</option>
-                        <option>-keep class com.xxx.web.model.** {*;}</option>
-
-                        &lt;!&ndash;不混淆JNI相关接口&ndash;&gt;
-                        <option>-keep class com.xxx.dasheng_cluster.service.** {*;}</option>
-                        <option>-keep class com.xxx.dasheng_selfsampling.service.** {*;}</option>
-
-
-                        &lt;!&ndash; 以下三个包因为大部分是Spring管理的Bean，不对包类的类名进行混淆，但对类中的属性和方法混淆&ndash;&gt;
-                        <option>-keep class com.xxx.web.controller.**</option>
-                        <option>-keep class com.xxx.web.service.**</option>
-                        <option>-keep class com.xxx.web.singleton.**</option>
-
-                        &lt;!&ndash; 不混淆凭证包下的所有类名，但对类中的属性、方法进行混淆&ndash;&gt;
-                        <option>-keep class com.xxx.web.executors.**</option>
-                        <option>-keep class com.xxx.web.interceptor.**</option>
-
-                        &lt;!&ndash; 不混淆启动类，否则spring-boot不能正常启动 &ndash;&gt;
-                        <option>-keep class com.xxx.web.Application</option>
-
-                        &lt;!&ndash; 忽略打包时的告警信息 &ndash;&gt;
-                        <option>-ignorewarnings</option>
-
-                        <option>-keep class site.heaven96.validate.common.** {*;}</option>
-                        <option>-keep class site.heaven96.validate.util.** {*;}</option>
-
-                    </options>
-                    <outjar>${project.build.finalName}-pg.jar</outjar>
-                    &lt;!&ndash; 添加依赖，这里你可以按你的需要修改，这里测试只需要一个JRE的Runtime包就行了 &ndash;&gt;
-                    <libs>
-                        <lib>${java.home}/lib/rt.jar</lib>
-                        <lib>${java.home}/lib/jce.jar</lib>
-                    </libs>
-                    &lt;!&ndash; 加载文件的过滤器，就是你的工程目录了&ndash;&gt;
-                    <inFilter>site/heaven96/**</inFilter>
-                    &lt;!&ndash; 对什么东西进行加载，这里仅有classes成功，毕竟你也不可能对配置文件及JSP混淆吧&ndash;&gt;
-                    <injar>classes</injar>
-                    &lt;!&ndash; 输出目录&ndash;&gt;
-                    <outputDirectory>${project.build.directory}</outputDirectory>
-                </configuration>
-            </plugin>-->
-
+            </plugin>
         </plugins>
     </build>
 
@@ -279,7 +177,7 @@
     <scm>
         <tag>main</tag>
         <url>https://github.com/a743110094/tools-all/</url>
-        <connection>scm:git:https://github.com/a743110094/tools-all/.git</connection>
+        <connection>scm:git:https://github.com/a743110094/tools-all.git</connection>
         <developerConnection>scm:git:git@github.com:a743110094</developerConnection>
     </scm>
 
@@ -295,11 +193,10 @@
     <distributionManagement>
         <snapshotRepository>
             <id>oss</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-        <repository>
-            <id>oss</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository><repository>
+        <id>oss</id>
+        <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+    </repository>
     </distributionManagement>
 </project>
