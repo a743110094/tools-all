@@ -1,7 +1,7 @@
 ﻿package site.heaven96.validate.common.enums;
 
 /**
- * 逻辑
+ * logic
  *
  * @author lgw3488
  * @date 2021/10/13
