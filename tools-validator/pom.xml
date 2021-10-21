@@ -178,7 +178,7 @@
 
     <scm>
         <tag>tools-validator</tag>
-        <url>https://gitee.com:heaven96/tools-all</url>
+        <url>https://gitee.com/heaven96/tools-all</url>
         <connection>scm:git:https://gitee.com/heaven96/tools-all.git</connection>
         <developerConnection>scm:git:git@gitee.com:heaven96:tools-all.git</developerConnection>
     </scm>
