@@ -1,4 +1,4 @@
-package site.heaven96.validate.common.enums;
+﻿package site.heaven96.validate.common.enums;
 
 /**
  * 逻辑
