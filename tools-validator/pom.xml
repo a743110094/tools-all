@@ -12,10 +12,10 @@
     </parent>-->
     <groupId>site.heaven96</groupId>
     <artifactId>tools-validator</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>tools-validator</name>
-    <url>https://github.com/a743110094/tools-all/</url>
+    <url>https://gitee.com/heaven96/tools-all</url>
     <description>tools-validator</description>
     <properties>
         <java.version>1.8</java.version>
@@ -178,9 +178,9 @@
 
     <scm>
         <tag>tools-validator-0.0.1</tag>
-        <url>https://github.com/a743110094/tools-all/</url>
-        <connection>scm:git:https://github.com/a743110094/tools-all.git</connection>
-        <developerConnection>scm:git:git@github.com:a743110094</developerConnection>
+        <url>https://gitee.com/heaven96/tools-all</url>
+        <connection>scm:git:https://gitee.com/heaven96/tools-all.git</connection>
+        <developerConnection>scm:git:git@gitee.com:Heaven96</developerConnection>
     </scm>
 
     <developers>
