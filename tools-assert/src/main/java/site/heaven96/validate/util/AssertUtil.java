@@ -4,8 +4,6 @@ import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 import site.heaven96.validate.common.exception.H4nBeforeValidateCheckException;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 /**
  * 断言工具
@@ -21,7 +19,7 @@ public class AssertUtil {
      * @param flag   标识
      * @param errMsg 错误消息
      */
-    public static void isTrueThrowBeforeExp(@NotNull final boolean flag, @NotBlank final String errMsg) {
+    public static void isTrueThrowBeforeExp(final boolean flag, final String errMsg) {
         if (!flag) {
             log.error(errMsg.trim());
             throw new H4nBeforeValidateCheckException(errMsg.trim());
@@ -35,13 +33,12 @@ public class AssertUtil {
      * @param flag   标识
      * @param errMsg 错误消息
      */
-    public static void isTrueThrowBeforeExp(@NotNull final boolean flag, @NotBlank final String errMsg,Object... errMsgParams) {
+    public static void isTrueThrowBeforeExp(final boolean flag, final String errMsg, Object... errMsgParams) {
         if (!flag) {
             log.error(errMsg.trim());
-            throw new H4nBeforeValidateCheckException(StrUtil.format(errMsg.trim(),errMsgParams));
+            throw new H4nBeforeValidateCheckException(StrUtil.format(errMsg.trim(), errMsgParams));
         }
     }
-
 
 
     ///////////////////////////////////////
@@ -53,7 +50,7 @@ public class AssertUtil {
      * @param flag   标识
      * @param errMsg 错误消息
      */
-    public static void isFalseThrowBeforeExp(@NotNull final boolean flag, @NotBlank final String errMsg) {
+    public static void isFalseThrowBeforeExp(final boolean flag, final String errMsg) {
         isTrueThrowBeforeExp(!flag, errMsg);
     }
 
@@ -63,7 +60,7 @@ public class AssertUtil {
      * @param flag   标识
      * @param errMsg 错误消息
      */
-    public static void isFalseThrowBeforeExp(@NotNull final boolean flag, @NotBlank final String errMsg,Object... errMsgParams) {
-        isTrueThrowBeforeExp(!flag, errMsg,errMsgParams);
+    public static void isFalseThrowBeforeExp(final boolean flag, final String errMsg, Object... errMsgParams) {
+        isTrueThrowBeforeExp(!flag, errMsg, errMsgParams);
     }
 }
