@@ -5,7 +5,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import site.heaven96.example.result.Result;
-import site.heaven96.validate.common.exception.H4nBeforeValidateCheckException;
 
 /**
  * 全局异常处理程序
@@ -23,8 +22,8 @@ public class GlobalExceptionHandler {
      * @param e exception
      * @return 响应结果
      */
-    @ExceptionHandler(H4nBeforeValidateCheckException.class)
-    public Result h4nBeforeValidateCheckException(final H4nBeforeValidateCheckException e) {
+    @ExceptionHandler(site.heaven96.validate.common.exception.H4nBeforeValidateCheckException.class)
+    public Result h4nBeforeValidateCheckException(final site.heaven96.validate.common.exception.H4nBeforeValidateCheckException e) {
         final String defaultMessage = e.getMessage();
         return new Result().failed(HttpStatus.PRECONDITION_FAILED, "H4n参数验证前的预检查异常：" + defaultMessage);
     }
