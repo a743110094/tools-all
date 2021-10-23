@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import site.heaven96.example.result.Result;
 import site.heaven96.validate.common.exception.H4nBeforeValidateCheckException;
-import site.heaven96.validate.common.exception.H4nValidateNotPassException;
 
 /**
  * 全局异常处理程序
@@ -16,20 +15,6 @@ import site.heaven96.validate.common.exception.H4nValidateNotPassException;
  */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-
-    /**
-     * H4n参数验证不通过 异常
-     * 捕获  MethodArgumentNotValidException 异常 参数验证异常
-     *
-     * @param e exception
-     * @return 响应结果
-     */
-    @ExceptionHandler(H4nValidateNotPassException.class)
-    public Result h4nValidateNotPassException(final H4nValidateNotPassException e) {
-        final String defaultMessage = e.getMessage();
-        return new Result().failed(HttpStatus.PRECONDITION_FAILED, "H4n参数验证失败：" + defaultMessage);
-    }
-
 
     /**
      * H4n参数验证前的预检查异常
