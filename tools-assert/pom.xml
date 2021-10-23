@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>site.heaven96</groupId>
     <artifactId>tools-assert</artifactId>
-    <version>0.0.4</version>
+    <version>0.0.5-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>tools-assert</name>
     <url>https://github.com/a743110094/tools-all/</url>
@@ -124,7 +124,7 @@
     </licenses>
 
     <scm>
-        <tag>tools-assert-0.0.4</tag>
+        <tag>tools-assert-0.0.1</tag>
         <url>https://github.com/a743110094/tools-all/</url>
         <connection>scm:git:https://github.com/a743110094/tools-all.git</connection>
         <developerConnection>scm:git:git@github.com:a743110094/tools-all.git</developerConnection>
