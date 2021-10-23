@@ -1,24 +1,41 @@
 package site.heaven96.validate.util;
 
-import site.heaven96.validate.lang.handler.compare.*;
+import site.heaven96.validate.lang.handler.base.compare.*;
 
 /**
  * 超级比较工具
  *
- * @author lgw3488
+ * @author Heaven96
  * @date 2021/10/19
  */
 public class H4nCompareUtil {
 
     private static AbstractCompareHandler getComparator() {
+        //数字比较器
         AbstractCompareHandler numberCompareHandler = new NumberCompareHandler();
+        //日期
         AbstractCompareHandler dateCompareHandler = new DateCompareHandler();
-        AbstractCompareHandler objectCompareHandler = new ObjectCompareHandler();
+        //字符串
         AbstractCompareHandler stringCompareHandler = new StringCompareHandler();
+        //对象
+        AbstractCompareHandler objectCompareHandler = new ObjectCompareHandler();
+
         numberCompareHandler.setNext(dateCompareHandler);
         dateCompareHandler.setNext(stringCompareHandler);
         stringCompareHandler.setNext(objectCompareHandler);
         return numberCompareHandler;
+    }
+
+
+    /**
+     * 等于 传入是否忽略大小写参数
+     *
+     * @param o1 1.
+     * @param o2 氧气
+     * @return boolean
+     */
+    public static boolean equalsB(Object o1, Object o2,boolean ignoreCase){
+       return getComparator().handle(o1, o2, ignoreCase) == 0;
     }
 
 

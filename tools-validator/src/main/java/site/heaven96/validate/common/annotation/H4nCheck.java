@@ -15,14 +15,20 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 /**
  * H4nCheck 配合 H4nUnionCheck 使用
  *
- * @author lgw3488
+ * @author Heaven96
  * @date 2021/10/05
  */
 @Target({FIELD})
 @Retention(RUNTIME)
 @Repeatable(H4nCheck.List.class)
-public @interface H4nCheck {
+public @interface H4nCheck{
 
+    /**
+     * 忽略大小写
+     *
+     * @return boolean
+     */
+    boolean ignoreCase() default true;
 
     /**
      * 逻辑

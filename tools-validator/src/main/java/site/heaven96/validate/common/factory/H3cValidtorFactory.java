@@ -8,7 +8,7 @@ import site.heaven96.validate.service.impl.H3cWmsValidateServiceImpl;
 /**
  * H3C验证器厂
  *
- * @author lgw3488
+ * @author Heaven96
  * @date 2021/10/10
  */
 public class H3cValidtorFactory {

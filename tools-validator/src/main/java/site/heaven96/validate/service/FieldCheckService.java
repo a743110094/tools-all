@@ -7,7 +7,7 @@ import site.heaven96.validate.common.enums.ValueSetOrigin;
 /**
  * 字段检查服务 用作单个字段的检查
  *
- * @author lgw3488
+ * @author Heaven96
  * @date 2021/10/11
  */
 public interface FieldCheckService {

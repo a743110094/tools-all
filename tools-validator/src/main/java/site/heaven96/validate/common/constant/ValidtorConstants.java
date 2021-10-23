@@ -3,10 +3,28 @@ package site.heaven96.validate.common.constant;
 /**
  * 验证器统一封装常量
  *
- * @author lgw3488
+ * @author Heaven96
  * @date 2021/10/10
  */
 public class ValidtorConstants {
+
+
+    /**
+     * 日期格式
+     */
+    public static final String DATE_FORMAT = "yyyy-MM-dd";
+    /**
+     * 日期、小时、分钟格式
+     */
+    public static final String DATE_HOUR_MINUTE_FORMAT = "yyyy-MM-dd HH:mm";
+    /**
+     * 日期、小时、分钟、秒格式
+     */
+    public static final String DATE_HOUR_MINUTE_SECOND_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    /**
+     * 日期、小时、分钟、秒、毫秒格式
+     */
+    public static final String DATE_HOUR_MINUTE_SECOND_MILLI_SECOND_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     //------------------------------  本地必输校验
     /**

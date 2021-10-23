@@ -3,7 +3,7 @@ package site.heaven96.validate.common.exception;
 /**
  * H4N验证未通过异常
  *
- * @author lgw3488
+ * @author Heaven96
  * @date 2021/10/09
  */
 public class H4nValidateNotPassException extends IllegalArgumentException {

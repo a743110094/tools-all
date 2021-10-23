@@ -11,7 +11,7 @@ import site.heaven96.validate.common.exception.H4nValidateNotPassException;
 /**
  * 全局异常处理程序
  *
- * @author lgw3488
+ * @author Heaven96
  * @date 2021/10/15
  */
 @RestControllerAdvice

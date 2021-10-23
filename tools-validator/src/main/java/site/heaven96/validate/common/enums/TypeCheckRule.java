@@ -3,7 +3,7 @@ package site.heaven96.validate.common.enums;
 /**
  * 单个字段校验验证规则
  *
- * @author lgw3488
+ * @author Heaven96
  * @date 2021/10/10
  */
 public enum TypeCheckRule {

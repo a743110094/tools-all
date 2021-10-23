@@ -21,13 +21,13 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * 定值约束{@ValueSetOrigin.FIXED_VALUE} 此字段的值必须在resultSet中
  * 定值约束{@ValueSetOrigin.SQL_RESULTS} 此字段的值必须在SQL（静态）执行的结果中
  *
- * @author lgw3488
+ * @author Heaven96
  * @date 2021/09/30
  */
 @Target({FIELD, METHOD, PARAMETER, ANNOTATION_TYPE})
 @Retention(RUNTIME)
 @Constraint(validatedBy = H3cFieldValidtor.class)
-public @interface H4nFieldCheck {
+public @interface H4nFieldCheck{
     /**
      * 校验类型
      *

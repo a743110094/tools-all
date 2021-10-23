@@ -5,7 +5,7 @@ import site.heaven96.validate.common.annotation.H4nUnionCheck;
 /**
  * 联合检查服务
  *
- * @author lgw3488
+ * @author Heaven96
  * @date 2021/10/14
  */
 public interface UnionCheckService {

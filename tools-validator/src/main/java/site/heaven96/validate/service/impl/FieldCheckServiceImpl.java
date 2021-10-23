@@ -1,5 +1,6 @@
 package site.heaven96.validate.service.impl;
 
+import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
@@ -9,6 +10,7 @@ import site.heaven96.validate.common.enums.TypeCheckRule;
 import site.heaven96.validate.common.enums.ValueSetOrigin;
 import site.heaven96.validate.common.exception.H4nBeforeValidateCheckException;
 import site.heaven96.validate.service.FieldCheckService;
+import site.heaven96.validate.util.H4nCompareUtil;
 import site.heaven96.validate.util.SqlExecutor;
 
 import java.math.BigDecimal;
@@ -19,11 +21,21 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * 现场检查服务实施
+ * 字段检查服务类
  *
- * @author lgw3488
+ * @apiNote 针对单个字段进行检验
+ *          比如 :
+ *          class User{
+ *              @H4nFieldCheck
+ *              private String name;
+ *          }
+ *          校验规则可以是 name 在给定的范围内，或者是某个静态sql的执行结果
+ *          （此方法是为了补充hibernate-validator的功能）
+ * @author Heaven96
  * @date 2021/10/11
+ *
  */
+//TODO 测试
 @Slf4j(topic = "[字段校验服务 FieldCheckServiceImpl]")
 public class FieldCheckServiceImpl implements FieldCheckService {
 
@@ -41,11 +53,13 @@ public class FieldCheckServiceImpl implements FieldCheckService {
     /**
      * Fun10 固定值校验
      *
+     * @see {@filedCheck}
      * @param obj      OBJ
      * @param valueSet 值集
      * @param operator 操作员
      * @return boolean
      */
+    @Deprecated
     public static boolean fun10(Object obj, Operator operator, String[] valueSet) {
         if (valueSet.length == 0) {
             return false;
@@ -53,7 +67,7 @@ public class FieldCheckServiceImpl implements FieldCheckService {
         switch (operator) {
             case EQUALS: {}
             case IN: {
-                //针对字符 字符串
+//针对字符 字符串
                 return Arrays.stream(valueSet).anyMatch(str -> ObjectUtil.equals(obj, str) || NumberUtil.equals(new BigDecimal(StrUtil.str(obj, StandardCharsets.UTF_8)), new BigDecimal(str)));
             }
             case NOT_EQUALS: {}
@@ -102,6 +116,78 @@ public class FieldCheckServiceImpl implements FieldCheckService {
             }
         }
     }
+
+
+    /**
+     * 单Field检查
+     * @date 2021年10月23日 02:31:24
+     * @param obj      OBJ
+     * @param operator 操作员
+     * @param valueSet 值集
+     * @return boolean
+     */
+    public static boolean filedCheck(Object obj, Operator operator,boolean ignoreCase, String[] valueSet) {
+        if (ArrayUtil.isEmpty(valueSet)) {
+            return false;
+        }
+        switch (operator) {
+            case EQUALS: {
+                return H4nCompareUtil.equalsB(obj,valueSet,ignoreCase);
+            }
+            case IN: {
+                //针对 字符串
+                return H4nCompareUtil.equals(obj,valueSet);
+            }
+            case NOT_EQUALS: {}
+            case NOT_IN: {
+                return Arrays.stream(valueSet).noneMatch(str -> ObjectUtil.equals(obj, str) || NumberUtil.equals(new BigDecimal(StrUtil.str(obj, StandardCharsets.UTF_8)), new BigDecimal(str)));
+            }
+            case LESS_THAN: {
+                //比较结果，如果c1 < c2，返回数小于0，c1==c2返回0，c1 > c2 大于0
+                return NumberUtil.isLess(new BigDecimal(StrUtil.toString(obj)), new BigDecimal(valueSet[0]));
+            }
+            case LESS_THAN_OR_EQUAL_TO: {
+                //比较结果，如果c1 < c2，返回数小于0，c1==c2返回0，c1 > c2 大于0
+                return NumberUtil.isLessOrEqual(new BigDecimal(StrUtil.toString(obj)), new BigDecimal(valueSet[0]));
+            }
+            case GREATER_THAN: {
+                //比较结果，如果c1 < c2，返回数小于0，c1==c2返回0，c1 > c2 大于0
+                return NumberUtil.isGreater(new BigDecimal(StrUtil.toString(obj)), new BigDecimal(valueSet[0]));
+            }
+            case GREATER_THAN_OR_EQUALS: {
+                //比较结果，如果c1 < c2，返回数小于0，c1==c2返回0，c1 > c2 大于0
+                return NumberUtil.isGreaterOrEqual(new BigDecimal(StrUtil.toString(obj)), new BigDecimal(valueSet[0]));
+            }
+            case BETWEEN_AND: {
+                String expression = valueSet[0].trim();//like [1,2)
+                char leftExp = expression.charAt(0);
+                char rightExp = expression.charAt(expression.length() - 1);
+                int commaIndex = expression.indexOf(',');
+                // 40 (  41 ) 91 [ 93 ]
+                if ((leftExp == 40 || leftExp == 91) && (rightExp == 41 || rightExp == 93)) {
+                    String minVal = expression.substring(1, commaIndex);
+                    String maxVal = expression.substring(commaIndex + 1, expression.length() - 1);
+                    int compareMin = ObjectUtil.compare(StrUtil.toString(obj), minVal);
+                    int compareMax = ObjectUtil.compare(StrUtil.toString(obj), maxVal);
+                    if (compareMin < 0 || compareMax > 0) {
+                        //比最小值小 比最大值大
+                        return false;
+                    }
+                    //开区间 踩在区间上
+                    return (compareMin != 0 || leftExp != 40) && (compareMax != 0 || rightExp != 41);
+                } else {
+                    throw new H4nBeforeValidateCheckException("BETWEEN校验时，区间表达式有误");
+                }
+            }
+            default: {
+                throw new H4nBeforeValidateCheckException("未知逻辑运算符");
+            }
+        }
+    }
+
+
+
+
 
     /**
      * 检查

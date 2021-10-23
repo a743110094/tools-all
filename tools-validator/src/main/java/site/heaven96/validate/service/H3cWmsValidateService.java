@@ -6,7 +6,7 @@ import site.heaven96.validate.common.enums.*;
 /**
  * h3c WMS验证服务 接口
  *
- * @author lgw3488
+ * @author Heaven96
  * @date 2021/10/06
  */
 public interface H3cWmsValidateService {

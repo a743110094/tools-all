@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 /**
  * H4表主键
  *
- * @author lgw3488
+ * @author Heaven96
  * @date 2021/10/14
  */
 @Target(ElementType.FIELD)

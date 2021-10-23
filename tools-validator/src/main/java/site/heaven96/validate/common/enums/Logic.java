@@ -3,7 +3,7 @@ package site.heaven96.validate.common.enums;
 /**
  * logic
  *
- * @author lgw3488
+ * @author Heaven96
  * @date 2021/10/13
  */
 public enum Logic {
@@ -26,15 +26,15 @@ public enum Logic {
     /**
      * 然后
      */
-    THEN("然后", Integer.MAX_VALUE - 3),
+    THEN("然后",  - 3),
     /**
      * 并列 然后
      */
-    AND_THEN("然后", Integer.MAX_VALUE - 2),
+    AND_THEN("然后",  - 2),
     /**
      * 或者然后
      */
-    OR_THEN("然后", Integer.MAX_VALUE - 1);
+    OR_THEN("然后", - 1);
 
 
     /**
@@ -42,7 +42,7 @@ public enum Logic {
      */
     private final String note;
     /**
-     * 顺序
+     * 顺序 条件类必须大于0 结论类必须小于0
      */
     private int order;
 

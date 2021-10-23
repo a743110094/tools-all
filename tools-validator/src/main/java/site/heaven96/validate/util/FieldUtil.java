@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 /**
  * 字段属性实用程序
  *
- * @author lgw3488
+ * @author Heaven96
  * @date 2021/10/18
  */
 public class FieldUtil {
@@ -29,7 +29,7 @@ public class FieldUtil {
      * @return {@code List<Field>}
      */
     public static List<Field> getGroupFieldListWithAnnotation(@NotNull final Object bean, @NotNull final int group) {
-        AssertUtil.isTrueThrowH4nBeforeValidateCheckException(BeanUtil.isBean(bean.getClass()), FU_OBJECT_IS_NOT_BEAN_ERR_MSG);
+        AssertUtil.isTrueThrowBeforeExp(BeanUtil.isBean(bean.getClass()), FU_OBJECT_IS_NOT_BEAN_ERR_MSG);
         try {
             return Arrays.stream(bean.getClass().getDeclaredFields())
                     .filter(field -> Arrays.stream(field.getDeclaredAnnotationsByType(H4nCheck.class))

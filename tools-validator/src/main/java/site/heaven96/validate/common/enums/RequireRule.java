@@ -4,7 +4,7 @@ package site.heaven96.validate.common.enums;
  * 需要规则
  * 必填校验规则
  *
- * @author lgw3488
+ * @author Heaven96
  * @date 2021/10/10
  */
 public enum RequireRule {

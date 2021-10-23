@@ -18,7 +18,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 /**
  * H3C数据校验
  *
- * @author lgw3488
+ * @author Heaven96
  * @date 2021/09/30
  */
 @Target({TYPE})

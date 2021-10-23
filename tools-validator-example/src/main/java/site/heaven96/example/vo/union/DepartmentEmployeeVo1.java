@@ -17,7 +17,7 @@ import static site.heaven96.validate.common.enums.Operator.*;
 /**
  * 部门员工VO
  *
- * @author lgw3488
+ * @author Heaven96
  * @date 2021/10/13
  */
 @Data

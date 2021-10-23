@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 /**
  * 员工
  *
- * @author lgw3488
+ * @author Heaven96
  * @date 2021/10/13
  */
 @Data
@@ -25,4 +25,8 @@ public class Employee {
      */
     private BigDecimal age;
 
+    /**
+     * 角色
+     */
+    private String role;
 }

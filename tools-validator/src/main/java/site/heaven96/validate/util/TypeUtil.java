@@ -24,7 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * 类操作Util
  *
- * @author lgw3488
+ * @author Heaven96
  * @date 2021/10/11
  */
 @Slf4j(topic = "TypeUtil")

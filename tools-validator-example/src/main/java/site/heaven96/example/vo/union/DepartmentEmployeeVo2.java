@@ -7,33 +7,32 @@ import site.heaven96.example.entity.union.Employee;
 import site.heaven96.validate.common.annotation.H4nCheck;
 import site.heaven96.validate.common.annotation.H4nUnionCheck;
 
-import javax.validation.Valid;
 import java.util.List;
 
 import static site.heaven96.validate.common.enums.Logic.IF;
 import static site.heaven96.validate.common.enums.Logic.THEN;
-import static site.heaven96.validate.common.enums.Operator.EQUALS;
-import static site.heaven96.validate.common.enums.Operator.GREATER_THAN;
+import static site.heaven96.validate.common.enums.Operator.*;
 
 /**
  * 部门员工VO
  *
- * @author lgw3488
+ * @author Heaven96
  * @date 2021/10/13
  */
 @Data
 @H4nUnionCheck(message = "管理部的崽，大于40岁才可以(SQL)")
-
+@H4nUnionCheck(group = 2,message = "A部的崽，必须拥有开发者的角色(SQL)")
 public class DepartmentEmployeeVo2 {
     /**
      * 部门
      */
     @H4nCheck(logic = IF, field = "#this.name", operator = EQUALS, valueSet = {"管理部"})
+    @H4nCheck(group = 2, field = "#this.name", operator = EQUALS, valueSet = {"管理部"})
     private Department department;
     /**
      * 员工
      */
     @H4nCheck(logic = THEN, field = "#this.age", operator = GREATER_THAN, valueSet = {"SELECT 40 FROM DUAL"})
-    @Valid
+    @H4nCheck(group = 2,logic = THEN, field = "#this.role", operator = IN, valueSet = {"SELECT '开发者' FROM DUAL WHERE '开发者' = #{thisrole} "})
     private List<Employee> employees;
 }

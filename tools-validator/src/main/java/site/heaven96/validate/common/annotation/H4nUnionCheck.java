@@ -21,7 +21,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * 定值约束{@ValueSetOrigin.DYNAMIC_SPECIFIED_VALUE} 此字段的值必须在refRetSetFieldName指定的Java属性名对应的中
  * 定值约束{@ValueSetOrigin.SQL_RESULTS} 此字段的值必须在SQL（静态/动态）执行的结果中
  *
- * @author lgw3488
+ * @author Heaven96
  * @date 2021/10/05
  */
 @Documented

@@ -22,7 +22,7 @@ import static site.heaven96.validate.common.constant.ValidtorConstants.TB_PARAMS
 /**
  * H3C WMS验证服务实现
  *
- * @author lgw3488
+ * @author Heaven96
  * @date 2021/10/08
  */
 @Slf4j(topic = "【H3C数据验证服务】")

@@ -12,7 +12,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 /**
  * 表约束验证
  *
- * @author lgw3488
+ * @author Heaven96
  * @date 2021/09/30
  */
 @Target({TYPE})

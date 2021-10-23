@@ -3,7 +3,7 @@ package site.heaven96.validate.common.enums;
 /**
  * 运算符
  *
- * @author lgw3488
+ * @author Heaven96
  * @apiNote 用作结果判断的逻辑运算
  * @date 2021/10/08
  */

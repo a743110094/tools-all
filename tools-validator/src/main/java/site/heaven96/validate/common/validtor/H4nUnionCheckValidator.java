@@ -11,7 +11,7 @@ import javax.validation.ConstraintValidatorContext;
 /**
  * H4N联合检查验证器
  *
- * @author lgw3488
+ * @author Heaven96
  * @date 2021/10/13
  */
 public class H4nUnionCheckValidator implements ConstraintValidator<H4nUnionCheck, Object> {
