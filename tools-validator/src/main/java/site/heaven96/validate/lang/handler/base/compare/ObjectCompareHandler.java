@@ -1,7 +1,7 @@
 package site.heaven96.validate.lang.handler.base.compare;
 
 import cn.hutool.core.util.ObjectUtil;
-import site.heaven96.validate.common.exception.H4nBeforeValidateCheckException;
+import site.heaven96.assertes.common.exception.H4nBeforeValidateCheckException;
 
 public class ObjectCompareHandler extends AbstractCompareHandler {
     /**

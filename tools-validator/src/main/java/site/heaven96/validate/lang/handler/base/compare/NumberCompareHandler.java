@@ -1,8 +1,9 @@
 package site.heaven96.validate.lang.handler.base.compare;
 
 import cn.hutool.core.util.NumberUtil;
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import site.heaven96.validate.common.exception.H4nBeforeValidateCheckException;
+import site.heaven96.assertes.util.AssertUtil;
 
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
@@ -26,22 +27,19 @@ public class NumberCompareHandler extends AbstractCompareHandler {
      */
     @Override
     public int handle(Object obj1, Object obj2, boolean ignoreCase) {
-        final String objStr1 = StrUtil.str(obj1, StandardCharsets.UTF_8);
-        final String objStr2 = StrUtil.str(obj2, StandardCharsets.UTF_8);
-        if (NumberUtil.isNumber(objStr1) && NumberUtil.isNumber(objStr2)) {
-            BigDecimal bigDecimal1 = new BigDecimal(objStr1);
-            BigDecimal bigDecimal2 = new BigDecimal(objStr2);
-            if (NumberUtil.equals(bigDecimal1, bigDecimal2)) {
-                return 0;
-            }
-            if (NumberUtil.isGreater(bigDecimal1, bigDecimal2)) {
-                return 1;
-            }
-            return -1;
-        } else if (getNext() != null) {
-            return getNext().handle(obj1, obj2, ignoreCase);
+        boolean obj1IsNumber = obj1 instanceof Number;
+        if (obj1IsNumber) {
+            final String objStr1 = StrUtil.str(obj1, StandardCharsets.UTF_8);
+            final String objStr2 = StrUtil.str(obj2, StandardCharsets.UTF_8);
+            boolean obj2IsNumber = NumberUtil.isNumber(objStr2);
+            AssertUtil.isTrueThrowBeforeExp(obj2IsNumber, "\n==>进行数字比较时，值域中的[{}]不能被转换为数字，无法比较", objStr2);
+            BigDecimal num1 = new BigDecimal(objStr1);
+            BigDecimal num2 = new BigDecimal(objStr2);
+            return NumberUtil.equals(num1, num2) ? 0 : NumberUtil.isGreater(num1, num2) ? 1 : -1;
         } else {
-            throw new H4nBeforeValidateCheckException(FCV_NO_MATCHED_HANDLER_ERR_MSG);
+            //不是日期类的比较 传递给责任链的下一环
+            AssertUtil.isTrueThrowBeforeExp(ObjectUtil.isNotNull(getNext()), FCV_NO_MATCHED_HANDLER_ERR_MSG);
+            return getNext().handle(obj1, obj2, ignoreCase);
         }
     }
 }

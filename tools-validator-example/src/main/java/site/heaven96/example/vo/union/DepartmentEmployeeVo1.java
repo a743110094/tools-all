@@ -29,6 +29,9 @@ import static site.heaven96.validate.common.enums.Operator.*;
 @H4nUnionCheck(group = 6 , message = "C部的崽，年龄为30 / 40才可以")
 @H4nUnionCheck(group = 7 , message = "D部的崽，年龄 <= 60才可以")
 @H4nUnionCheck(group = 8 , message = "E部的崽，年龄 >= 30才可以")
+@H4nUnionCheck(group = 9 , message = "F部的崽，名字不能为空 null ")
+@H4nUnionCheck(group = 10 , message = "G部的崽，名字不能为空 hasText")
+@H4nUnionCheck(group = 11 , message = "H部的崽，生日必须晚于2020年1月1日")
 public class DepartmentEmployeeVo1 {
     /**
      * 部门
@@ -41,6 +44,9 @@ public class DepartmentEmployeeVo1 {
     @H4nCheck(group = 6,logic = IF, field = "#this.name", operator = EQUALS, valueSet = {"C部"})
     @H4nCheck(group = 7,logic = IF, field = "#this.name", operator = EQUALS, valueSet = {"D部"})
     @H4nCheck(group = 8,logic = IF, field = "#this.name", operator = EQUALS, valueSet = {"E部"})
+    @H4nCheck(group = 9,logic = IF, field = "#this.name", operator = EQUALS, valueSet = {"F部"})
+    @H4nCheck(group = 10,logic = IF, field = "#this.name", operator = EQUALS, valueSet = {"G部"})
+    @H4nCheck(group = 11,logic = IF, field = "#this.name", operator = EQUALS, valueSet = {"H部"})
     @Valid
     private Department department;
     /**
@@ -54,6 +60,9 @@ public class DepartmentEmployeeVo1 {
     @H4nCheck(group = 6,logic = THEN, field = "#this.age", operator = IN, valueSet = {"30","40"})
     @H4nCheck(group = 7,logic = THEN, field = "#this.age", operator = LESS_THAN_OR_EQUAL_TO, valueSet = {"60"})
     @H4nCheck(group = 8,logic = THEN, field = "#this.age", operator = GREATER_THAN_OR_EQUALS, valueSet = {"30"})
+    @H4nCheck(group = 9,logic = THEN, field = "#this.dateOfBirth", operator = GREATER_THAN, valueSet = {"2020-01-01"})
+    @H4nCheck(group = 10,logic = THEN, field = "#this.name", operator = NOT_NULL)
+    @H4nCheck(group = 11,logic = THEN, field = "#this.dateOfBirth", operator = HAS_TEXT)
     @Valid
     private List<Employee> employees;
 }

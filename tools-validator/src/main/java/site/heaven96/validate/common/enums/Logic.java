@@ -44,7 +44,7 @@ public enum Logic {
     /**
      * 顺序 条件类必须大于0 结论类必须小于0
      */
-    private int order;
+    private final int order;
 
 
     /**

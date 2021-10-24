@@ -10,14 +10,14 @@ import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
+import site.heaven96.assertes.common.exception.H4nUnExpectedException;
+import site.heaven96.assertes.util.AssertUtil;
 import site.heaven96.validate.common.annotation.H4nCheck;
 import site.heaven96.validate.common.annotation.H4nUnionCheck;
 import site.heaven96.validate.common.enums.Logic;
 import site.heaven96.validate.common.enums.Operator;
 import site.heaven96.validate.common.enums.ValueSetOrigin;
-import site.heaven96.validate.common.exception.H4nUnExpectedException;
 import site.heaven96.validate.service.UnionCheckService;
-import site.heaven96.validate.util.AssertUtil;
 import site.heaven96.validate.util.AutoChooseUtil;
 import site.heaven96.validate.util.FieldUtil;
 
@@ -80,7 +80,7 @@ public class UnionCheckServiceImpl implements UnionCheckService {
         //校验组号
         final int group = ck.group();
         //找到包含 @H4nCheck 注解的 group 和 @H4nUnionCheck 的group 一致的 FIELDS
-        final List<Field> fieldsWithH4nCheck = FieldUtil.getGroupFieldListWithAnnotation(o,group);
+        final List<Field> fieldsWithH4nCheck = FieldUtil.getGroupFieldListWithAnnotation(o, group);
         //如果此bean不包含@H4nCheck注解  直接报错
         AssertUtil.isTrueThrowBeforeExp(CollUtil.isNotEmpty(fieldsWithH4nCheck), NO_H4CHECK_ANNOTATION_ERR_MSG);
         //字段和注解的列表
@@ -91,53 +91,19 @@ public class UnionCheckServiceImpl implements UnionCheckService {
         List<AnnotationField> anFieldsThen = CollUtil.newArrayList();
 
         //查询每个field，找出本组的H4nCheck 并根据IF或者THEN分到不同数组
-       /* fieldsWithH4nCheck.stream()
-                .forEach(field -> {
-                    Optional<H4nCheck> any = Arrays.stream(field.getDeclaredAnnotationsByType(H4nCheck.class))
-                            .filter(annotationItem -> annotationItem.group() == group).findAny();
-                    CollectionUtil.addAll(anFields, new AnnotationField(any.get(), field));
-                });*/
-        fieldsWithH4nCheck.stream().forEach(fldItem->{
+        fieldsWithH4nCheck.stream().forEach(fldItem -> {
             Arrays.stream(fldItem.getDeclaredAnnotationsByType(H4nCheck.class))
                     //找本组的注解
                     .filter(annotationItem -> annotationItem.group() == group)
-                    .forEach(annoItem->{
+                    .forEach(annoItem -> {
                         final int order = annoItem.logic().getOrder();
-                        if (order>0){
-                            //order > 0 为条件类
-                            CollUtil.addAll(anFieldsIf, new AnnotationField(annoItem,fldItem));
-                        }
-                         else if (order<0){
-                            //order < 0 为结论类
-                            CollUtil.addAll(anFieldsThen, new AnnotationField(annoItem,fldItem));
+                        //order > 0 为条件类 order < 0 为结论类
+                        if (order != 0) {
+                            CollUtil.addAll((order > 0 ? anFieldsIf : anFieldsThen), new AnnotationField(annoItem, fldItem));
                         }
                     });
         });
-
-
         ////////////////开始校验
-
-
-        /*anFields.stream().forEach(annotationFieldsItem -> {
-                    Logic declareLogic = annotationFieldsItem.getH4nCheckAnnontation().logic();
-                    switch (declareLogic) {
-                        case IF: {
-                        }
-                        case AND_IF: {
-                        }
-                        case OR_IF: {
-                            CollUtil.addAll(anFieldsIf, annotationFieldsItem);
-                            break;
-                        }
-                        case THEN: {
-                            CollUtil.addAll(anFieldsThen, annotationFieldsItem);
-                            break;
-                        }
-                        default: {
-                        }
-                    }
-                }
-        );*/
         //1.判断   Logic.IF/OR_IF/AND_IF条件链  是否成立
         AtomicBoolean conditionIsTrue = new AtomicBoolean(true);
         AtomicBoolean resultIsTrue = new AtomicBoolean(true);
@@ -162,11 +128,11 @@ public class UnionCheckServiceImpl implements UnionCheckService {
                         Object beanA = ReflectUtil.getFieldValue(o, annotationField.getName());
                         ctx.setRootObject(beanA);
                         //getValue有参数ctx，从新的容器中根据SpEL表达式获取所需的值
-                        targetFieldPathValue = exp.getValue(ctx,String.class);
+                        targetFieldPathValue = exp.getValue(ctx, Object.class);
                         System.out.println(targetFieldPathValue);
                     }
-                    boolean b = FieldCheckServiceImpl.fun10(
-                            targetFieldPathValue, operator, valueSet
+                    boolean b = FieldCheckServiceImpl.filedCheck(
+                            targetFieldPathValue, operator,check.ignoreCase(), valueSet
                     );
 
                     if (logic.equals(Logic.IF) || logic.equals(Logic.AND_IF)) {
@@ -212,7 +178,7 @@ public class UnionCheckServiceImpl implements UnionCheckService {
                                 StandardEvaluationContext ctx = new StandardEvaluationContext();
                                 ctx.setRootObject(beanA);
                                 //getValue有参数ctx，从新的容器中根据SpEL表达式获取所需的值
-                                targetFieldPathValue = exp.getValue(ctx,String.class);
+                                targetFieldPathValue = exp.getValue(ctx, Object.class);
                             }
                             if (!(targetFieldPathValue instanceof Collection)) {
                                 targetFieldPathValue = Arrays.asList(targetFieldPathValue);
@@ -222,24 +188,21 @@ public class UnionCheckServiceImpl implements UnionCheckService {
                                 Collection collections = (Collection) targetFieldPathValue;
 
                                 collections.stream().forEach(targetFieldPathValueItem -> {
-                                    boolean b = FieldCheckServiceImpl.fun10(
-                                            targetFieldPathValueItem, operator, valueSet
+                                    boolean b = FieldCheckServiceImpl.filedCheck(
+                                            targetFieldPathValueItem, operator,check.ignoreCase(), valueSet
                                     );
                                     if (logic.equals(Logic.THEN) || logic.equals(Logic.AND_THEN)) {
                                         resultIsTrue.set(resultIsTrue.get() && b);
                                     } else if (logic.equals(Logic.OR_THEN)) {
                                         resultIsTrue.set(resultIsTrue.get() || b);
                                     } else {
-                                        throw new H4nUnExpectedException("构造前提条件错误（未指定Logic）" + check.toString());
+                                        throw new H4nUnExpectedException("构造前提条件错误（未指定Logic）" + check);
                                     }
                                     if (!resultIsTrue.get()) {
                                         return;
                                     }
                                 });
-
                             }
-
-
                         }
                 );
 

@@ -23,5 +23,5 @@ public enum ValueSetOrigin {
     /**
      * sql执行结果 根据给定的sql执行结果
      */
-    SQL_RESULTS;
+    SQL_RESULTS
 }

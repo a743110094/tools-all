@@ -1,12 +1,13 @@
 package site.heaven96.validate.lang.handler.operator;
 
+import site.heaven96.assertes.util.AssertUtil;
 import site.heaven96.validate.common.enums.Operator;
-import site.heaven96.validate.util.AssertUtil;
 
 import javax.validation.constraints.NotNull;
 
 public abstract class AbstractBetweenAndFixedValueHandler extends AbstractFixedValueHandler {
     protected static final String BA_HANDLER_NOT_MATCHES_ERR_MSG = "\n===> 指定Operator为BETWEEN_AND时，只能针对数字或者日期类进行比较，没有匹配到处理器";
+    protected static final String VALUE_SET_IS_NULL_ERR_MSG = "\n===> 指定Operator为BETWEEN_AND时，合法值域为空";
 
     private AbstractBetweenAndFixedValueHandler nextAbstractBetweenAndHandler;
 

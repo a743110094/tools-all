@@ -1,4 +1,4 @@
-package site.heaven96.validate.common.exception;
+package site.heaven96.assertes.common.exception;
 
 /**
  * 执行验证前的检查发生异常

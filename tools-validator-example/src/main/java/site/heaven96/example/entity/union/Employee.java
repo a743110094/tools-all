@@ -3,6 +3,7 @@ package site.heaven96.example.entity.union;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * 员工
@@ -29,4 +30,9 @@ public class Employee {
      * 角色
      */
     private String role;
+
+    /**
+     * 出生日期
+     */
+    private Date dateOfBirth;
 }

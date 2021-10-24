@@ -1,8 +1,8 @@
-package site.heaven96.validate.util;
+package site.heaven96.assertes.util;
 
 import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
-import site.heaven96.validate.common.exception.H4nBeforeValidateCheckException;
+import site.heaven96.assertes.common.exception.H4nBeforeValidateCheckException;
 
 
 /**
@@ -35,8 +35,9 @@ public class AssertUtil {
      */
     public static void isTrueThrowBeforeExp(final boolean flag, final String errMsg, Object... errMsgParams) {
         if (!flag) {
-            log.error(errMsg.trim());
-            throw new H4nBeforeValidateCheckException(StrUtil.format(errMsg.trim(), errMsgParams));
+            String err = StrUtil.format(errMsg.trim(), errMsgParams);
+            //log.error(err);
+            throw new H4nBeforeValidateCheckException(err);
         }
     }
 

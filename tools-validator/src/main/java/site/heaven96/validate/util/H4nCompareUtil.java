@@ -1,5 +1,7 @@
 package site.heaven96.validate.util;
 
+import cn.hutool.core.util.ObjectUtil;
+import site.heaven96.assertes.util.AssertUtil;
 import site.heaven96.validate.lang.handler.base.compare.*;
 
 /**
@@ -81,6 +83,10 @@ public class H4nCompareUtil {
      * @return boolean
      */
     public static boolean isGreater(Object o1, Object o2) {
+        if (ObjectUtil.isNull(o1)){
+            return false;
+        }
+        AssertUtil.isTrueThrowBeforeExp(ComparableUtil.rangeCompare(o1),"范围比较仅适用于数字或者日期，您提供的值[{}]属于[{}]",o1,o1.getClass());
         return getComparator().handle(o1, o2, false) > 0;
     }
 
@@ -93,6 +99,10 @@ public class H4nCompareUtil {
      * @return boolean
      */
     public static boolean greaterOrEquals(Object o1, Object o2) {
+        if (ObjectUtil.isNull(o1)){
+            return false;
+        }
+        AssertUtil.isTrueThrowBeforeExp(ComparableUtil.rangeCompare(o1),"范围比较仅适用于数字或者日期，您提供的值[{}]属于[{}]",o1,o1.getClass());
         return getComparator().handle(o1, o2, false) >= 0;
     }
 
@@ -104,6 +114,10 @@ public class H4nCompareUtil {
      * @return boolean
      */
     public static boolean isLess(Object o1, Object o2) {
+        if (ObjectUtil.isNull(o1)){
+            return false;
+        }
+        AssertUtil.isTrueThrowBeforeExp(ComparableUtil.rangeCompare(o1),"范围比较仅适用于数字或者日期，您提供的值[{}]属于[{}]",o1,o1.getClass());
         return getComparator().handle(o1, o2, false) < 0;
     }
 
@@ -116,8 +130,11 @@ public class H4nCompareUtil {
      * @return boolean
      */
     public static boolean lessOrEquals(Object o1, Object o2) {
+        if (ObjectUtil.isNull(o1)){
+            return false;
+        }
+        AssertUtil.isTrueThrowBeforeExp(ComparableUtil.rangeCompare(o1),"范围比较仅适用于数字或者日期，您提供的值[{}]属于[{}]",o1,o1.getClass());
         return getComparator().handle(o1, o2, false) <= 0;
     }
-
 
 }

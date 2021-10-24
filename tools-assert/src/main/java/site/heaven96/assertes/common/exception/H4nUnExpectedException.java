@@ -1,4 +1,4 @@
-package site.heaven96.validate.common.exception;
+package site.heaven96.assertes.common.exception;
 
 /**
  * H4N意外异常

@@ -24,7 +24,7 @@ public class ValidtorConstants {
     /**
      * 日期、小时、分钟、秒、毫秒格式
      */
-    public static final String DATE_HOUR_MINUTE_SECOND_MILLI_SECOND_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    public static final String DATE_HOUR_MINUTE_SECOND_MILLI_SECOND_FORMAT = "yyyy-MM-dd HH:mm:ss.SSS";
 
     //------------------------------  本地必输校验
     /**

@@ -4,10 +4,10 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import site.heaven96.validate.common.constant.ValidtorConstants;
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 /**
@@ -37,7 +37,7 @@ public class DateUtil {
      * @return boolean
      */
     public static boolean strCanBeCastToDate(String str){
-        return ObjectUtil.isNotNull(strCastToDate(str));
+        return ObjectUtil.isNotNull(toDate(str));
     }
 
     /**
@@ -46,25 +46,19 @@ public class DateUtil {
      * @param str 应力
      * @return {@code Date}
      */
-    public static Date strCastToDate(String str){
+    public static Date toDate(String str){
         if (StrUtil.isBlank(str)){
             return null;
         }
         //试错转换
         try {
-            //用于格式化或解析具有偏移量的日期（如果可用），例如“2011-12-03”或“2011-12-03+01:00”。
-            return cn.hutool.core.date.DateUtil.parse(str, DateTimeFormatter.ISO_DATE);
+            //用于格式化或解析具有偏移量的日期（如果可用），例如“2011-12-03”。
+            return cn.hutool.core.date.DateUtil.parseDate(str);
         }catch (Exception e){
             //ignore
         }
         try {
-            //用于格式化或解析没有偏移量的日期，例如“20111203”。
-            return cn.hutool.core.date.DateUtil.parse(str, DateTimeFormatter.BASIC_ISO_DATE);
-        }catch (Exception e){
-            //ignore
-        }
-        try {
-            return cn.hutool.core.date.DateUtil.parse(str, ValidtorConstants.DATE_HOUR_MINUTE_FORMAT);
+            return cn.hutool.core.date.DateUtil.parseDateTime(str);
         }catch (Exception e){
             //ignore
         }
@@ -79,5 +73,23 @@ public class DateUtil {
             //ignore
         }
         return null;
+    }
+
+
+    /**
+     * 转换为日期
+     *
+     * @param obj OBJ
+     * @return {@code Date}
+     */
+    public static Date toDate(Object obj){
+        if (ObjectUtil.isNull(obj)){
+            return null;
+        }
+        if (isDate(obj)) {
+            return (Date) obj;
+        }
+        String str = StrUtil.str(obj, StandardCharsets.UTF_8);
+        return toDate(str);
     }
 }
