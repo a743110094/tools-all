@@ -2,7 +2,7 @@ package site.heaven96.validate.lang.handler.operator;
 
 import cn.hutool.core.util.ArrayUtil;
 import site.heaven96.assertes.util.AssertUtil;
-import site.heaven96.validate.common.enums.Operator;
+import site.heaven96.validate.common.enums.Logic;
 
 import javax.validation.constraints.NotNull;
 
@@ -27,30 +27,30 @@ public abstract class AbstractEqualsFixedValueHandler extends AbstractFixedValue
         this.nextAbstractEqualsHandler = next;
     }
 
-    private boolean toHandler(Object obj, Operator operator, @NotNull final Object[] valueSet) {
+    private boolean toHandler(Object obj, Logic logic, @NotNull final Object[] valueSet) {
         AbstractEqualsFixedValueHandler handler1 = new NumberEqualsFixedValueHandler();
         AbstractEqualsFixedValueHandler handler2 = new DateEqualsFixedValueHandler();
         handler1.setNextEqualsHandler(handler2);
-        return handler1.subHandle(obj, operator, ArrayUtil.firstNonNull(valueSet));
+        return handler1.subHandle(obj, logic, ArrayUtil.firstNonNull(valueSet));
     }
 
-    public abstract boolean subHandle(Object obj, Operator operator, Object standardVal);
+    public abstract boolean subHandle(Object obj, Logic logic, Object standardVal);
 
 
     /**
      * 处理请求
      *
      * @param obj      OBJ
-     * @param operator 运算符
+     * @param logic    运算符
      * @param valueSet 值集
      * @return boolean
      */
     @Override
-    public boolean handle(Object obj, @NotNull final Operator operator, @NotNull final Object[] valueSet) {
-        if (Operator.EQUALS != operator) {
-            AssertUtil.isTrueThrowBeforeExp(getNext()!=null,FCV_NO_MATCHED_HANDLER_ERR_MSG);
-            return getNext().handle(obj, operator, valueSet);
+    public boolean handle(Object obj, @NotNull final Logic logic, @NotNull final Object[] valueSet) {
+        if (Logic.EQUALS != logic) {
+            AssertUtil.isTrueThrowBeforeExp(getNext() != null, FCV_NO_MATCHED_HANDLER_ERR_MSG);
+            return getNext().handle(obj, logic, valueSet);
         }
-        return toHandler(obj, operator,valueSet);
+        return toHandler(obj, logic, valueSet);
     }
 }

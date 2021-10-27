@@ -1,7 +1,10 @@
 package site.heaven96.example.vo.union;
 
 
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import site.heaven96.example.entity.union.Department;
 import site.heaven96.example.entity.union.Employee;
 import site.heaven96.validate.common.annotation.H4nCheck;
@@ -9,9 +12,9 @@ import site.heaven96.validate.common.annotation.H4nUnionCheck;
 
 import java.util.List;
 
-import static site.heaven96.validate.common.enums.Logic.IF;
-import static site.heaven96.validate.common.enums.Logic.THEN;
-import static site.heaven96.validate.common.enums.Operator.*;
+import static site.heaven96.validate.common.enums.Condition.IF;
+import static site.heaven96.validate.common.enums.Condition.THEN;
+import static site.heaven96.validate.common.enums.Logic.*;
 
 /**
  * 部门员工VO
@@ -19,9 +22,12 @@ import static site.heaven96.validate.common.enums.Operator.*;
  * @author Heaven96
  * @date 2021/10/13
  */
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
 @H4nUnionCheck(message = "管理部的崽，大于40岁才可以(SQL)")
-@H4nUnionCheck(group = 2,message = "A部的崽，必须拥有开发者的角色(SQL)")
+@H4nUnionCheck(group = 2, message = "A部的崽，必须拥有开发者的角色(SQL)")
 public class DepartmentEmployeeVo2 {
     /**
      * 部门

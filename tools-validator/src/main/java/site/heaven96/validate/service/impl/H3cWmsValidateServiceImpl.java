@@ -80,8 +80,8 @@ public class H3cWmsValidateServiceImpl implements H3cWmsValidateService {
      * @return boolean
      */
     @Override
-    public boolean typeValidator(String sql, String[] fieldsA, String[] fieldsB, Relation relation, Operator operator, String[] resultSet, Object obj) {
-        log.info(TYPE_LOG_ENTRACE, fieldsA, fieldsB, operator, resultSet);
+    public boolean typeValidator(String sql, String[] fieldsA, String[] fieldsB, Relation relation, Logic logic, String[] resultSet, Object obj) {
+        log.info(TYPE_LOG_ENTRACE, fieldsA, fieldsB, logic, resultSet);
         boolean checkPass = typeValidtorparaChecker(sql, fieldsA, fieldsB);
         if (!checkPass) {
             log.error("SQL要求的参数个数(?数目)和实际提供的参数个数不匹配");
@@ -102,14 +102,14 @@ public class H3cWmsValidateServiceImpl implements H3cWmsValidateService {
         for (int i = 0; i < qTimes; i++) {
             argsPerQuery = (List<Object>) CollectionUtil.addAll(argsA.get(NumberUtil.min(aRows - 1, i)), argsB.get(NumberUtil.min(bRows - 1, i)));
             String res = SqlExecutor.selectStr(sql, argsPerQuery.toArray());
-            if (operator.equals(Operator.EQUALS)) {
+            if (logic.equals(Logic.EQUALS)) {
                 //sql结果与结果集的第一个参数匹配不上  则验证失败
                 if (resultSet[0].equals(res)) {
                     continue;
                 } else {
                     return false;
                 }
-            } else if (operator.equals(Operator.NOT_EQUALS)) {
+            } else if (logic.equals(Logic.NOT_EQUALS)) {
                 //sql结果与结果集的第一个参数匹配上  则验证失败
                 if (resultSet[0].equals(res)) {
                     return false;

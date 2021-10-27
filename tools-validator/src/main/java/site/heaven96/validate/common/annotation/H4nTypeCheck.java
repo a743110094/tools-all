@@ -1,7 +1,7 @@
 package site.heaven96.validate.common.annotation;
 
 import site.heaven96.validate.common.annotation.mutil.H4nTypeVerifies;
-import site.heaven96.validate.common.enums.Operator;
+import site.heaven96.validate.common.enums.Logic;
 import site.heaven96.validate.common.enums.Relation;
 import site.heaven96.validate.common.enums.TypeCheckRule;
 import site.heaven96.validate.common.validtor.H3cTypeValidtor;
@@ -72,9 +72,9 @@ public @interface H4nTypeCheck {
     /**
      * 运算符
      *
-     * @return {@code Operator}
+     * @return {@code Logic}
      */
-    Operator operator() default Operator.EQUALS;
+    Logic operator() default Logic.EQUALS;
 
     /**
      * 结果集

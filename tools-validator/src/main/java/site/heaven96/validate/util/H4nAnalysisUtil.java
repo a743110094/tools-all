@@ -1,6 +1,6 @@
 package site.heaven96.validate.util;
 
-import site.heaven96.validate.common.enums.Operator;
+import site.heaven96.validate.common.enums.Logic;
 import site.heaven96.validate.lang.handler.operator.*;
 
 import javax.validation.constraints.NotNull;
@@ -25,14 +25,14 @@ public class H4nAnalysisUtil {
         //介于之间  仅限数字 日期比较
         AbstractFixedValueHandler handler6 = new AbstractBetweenAndFixedValueHandler() {
             @Override
-            public boolean subHandle(Object obj, Operator operator, @NotNull Object[] valueSet) {
+            public boolean subHandle(Object obj, Logic operator, @NotNull Object[] valueSet) {
                 return this.handle(obj, operator, valueSet);
             }
         };
         //对象相等
         AbstractFixedValueHandler handler7 = new AbstractEqualsFixedValueHandler() {
             @Override
-            public boolean subHandle(Object obj, Operator operator, Object standardVal) {
+            public boolean subHandle(Object obj, Logic operator, Object standardVal) {
                 return this.handle(obj, operator, new Object[]{standardVal});
             }
         };
@@ -46,8 +46,8 @@ public class H4nAnalysisUtil {
         return handler1;
     }
 
-    public static boolean analysis(Object obj, Operator operator, @NotNull String[] valueSet){
-       return getLogic().handle(obj, operator, valueSet);
+    public static boolean analysis(Object obj, Logic logic, @NotNull String[] valueSet) {
+        return getLogic().handle(obj, logic, valueSet);
     }
 
 }

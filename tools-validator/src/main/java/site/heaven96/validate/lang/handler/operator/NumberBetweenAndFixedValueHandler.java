@@ -4,7 +4,7 @@ import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
 import site.heaven96.assertes.util.AssertUtil;
-import site.heaven96.validate.common.enums.Operator;
+import site.heaven96.validate.common.enums.Logic;
 import site.heaven96.validate.util.H4nCompareUtil;
 
 import javax.validation.constraints.NotNull;
@@ -35,13 +35,13 @@ public class NumberBetweenAndFixedValueHandler extends AbstractBetweenAndFixedVa
     private static final String NB_INTERVAL_EXPRESSION_ERR_MSG = "\n===>调用数字 介于 处理程序时，区间表达式长度  有误，示例：[1,2)，您提供的是【{}】";
 
     @Override
-    public boolean subHandle(Object obj, Operator operator, @NotNull Object[] valueSet){
+    public boolean subHandle(Object obj, Logic logic, @NotNull Object[] valueSet) {
         boolean objIsNumber = NumberUtil.isNumber(StrUtil.str(obj, StandardCharsets.UTF_8));
         if (!objIsNumber) {
-            AssertUtil.isTrueThrowBeforeExp(nextBetweenAndHandler()!=null,BA_HANDLER_NOT_MATCHES_ERR_MSG);
-            return nextBetweenAndHandler().subHandle(obj, operator, valueSet);
+            AssertUtil.isTrueThrowBeforeExp(nextBetweenAndHandler() != null, BA_HANDLER_NOT_MATCHES_ERR_MSG);
+            return nextBetweenAndHandler().subHandle(obj, logic, valueSet);
         }
-        final String exp = StrUtil.str(ArrayUtil.firstNonNull(valueSet),StandardCharsets.UTF_8).trim();//like [1,2)
+        final String exp = StrUtil.str(ArrayUtil.firstNonNull(valueSet), StandardCharsets.UTF_8).trim();//like [1,2)
         AssertUtil.isTrueThrowBeforeExp(exp.length() > 3, StrUtil.format(NB_INTERVAL_EXPRESSION_ERR_MSG));
         char lExp = exp.charAt(0);
         AssertUtil.isTrueThrowBeforeExp((lExp == 40 || lExp == 91), StrUtil.format(NB_LEFT_INTERVAL_SYMBOL_IS_INVALID_ERR_MSG, lExp));

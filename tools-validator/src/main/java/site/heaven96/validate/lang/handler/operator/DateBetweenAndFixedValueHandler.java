@@ -2,7 +2,7 @@ package site.heaven96.validate.lang.handler.operator;
 
 import cn.hutool.core.util.ArrayUtil;
 import site.heaven96.assertes.util.AssertUtil;
-import site.heaven96.validate.common.enums.Operator;
+import site.heaven96.validate.common.enums.Logic;
 
 import javax.validation.constraints.NotNull;
 
@@ -22,19 +22,19 @@ public class DateBetweenAndFixedValueHandler extends AbstractBetweenAndFixedValu
      * obj：1  valueSet {"","[0,1]"} 是合法的
      *
      * @param obj      OBJ
-     * @param operator 运算符
+     * @param logic    运算符
      * @param valueSet 值集
      * @return boolean
      */
     @Override
-    public boolean subHandle(Object obj, Operator operator, @NotNull Object[] valueSet) {
+    public boolean subHandle(Object obj, Logic logic, @NotNull Object[] valueSet) {
         boolean objIsDate = site.heaven96.validate.util.DateUtil.isDate(obj);
         if (!objIsDate) {
-            AssertUtil.isTrueThrowBeforeExp(nextBetweenAndHandler()!=null,BA_HANDLER_NOT_MATCHES_ERR_MSG);
-            return nextBetweenAndHandler().subHandle(obj, operator, valueSet);
+            AssertUtil.isTrueThrowBeforeExp(nextBetweenAndHandler() != null, BA_HANDLER_NOT_MATCHES_ERR_MSG);
+            return nextBetweenAndHandler().subHandle(obj, logic, valueSet);
         }
-        if (ArrayUtil.isEmpty(valueSet)){
-            AssertUtil.isTrueThrowBeforeExp(nextBetweenAndHandler()!=null,VALUE_SET_IS_NULL_ERR_MSG);
+        if (ArrayUtil.isEmpty(valueSet)) {
+            AssertUtil.isTrueThrowBeforeExp(nextBetweenAndHandler() != null, VALUE_SET_IS_NULL_ERR_MSG);
         }
         return false;
     }

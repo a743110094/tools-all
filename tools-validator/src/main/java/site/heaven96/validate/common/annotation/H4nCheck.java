@@ -1,7 +1,8 @@
 package site.heaven96.validate.common.annotation;
 
+import org.springframework.core.annotation.Order;
+import site.heaven96.validate.common.enums.Condition;
 import site.heaven96.validate.common.enums.Logic;
-import site.heaven96.validate.common.enums.Operator;
 import site.heaven96.validate.common.enums.ValueSetOrigin;
 
 import java.lang.annotation.Documented;
@@ -21,6 +22,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target({FIELD})
 @Retention(RUNTIME)
 @Repeatable(H4nCheck.List.class)
+@Order(99999)
 public @interface H4nCheck{
 
     /**
@@ -33,9 +35,9 @@ public @interface H4nCheck{
     /**
      * 逻辑
      *
-     * @return {@code Logic}
+     * @return {@code Condition}
      */
-    Logic logic() default Logic.NONE;
+    Condition logic() default Condition.NONE;
 
     /**
      * 字段
@@ -55,9 +57,9 @@ public @interface H4nCheck{
      * 运算符
      * 表述字段值和valueSet之间的逻辑关系
      *
-     * @return {@code Operator}
+     * @return {@code Logic}
      */
-    Operator operator() default Operator.AUTO;
+    Logic operator() default Logic.AUTO;
 
     /**
      * 值集来源

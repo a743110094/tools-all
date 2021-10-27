@@ -10,7 +10,7 @@ import java.util.*;
 /**
  * H4N SQL参数工具
  *
- * @author lgw3488
+ * @author Heaven96
  * @date 2021/10/22
  */
 public class H4nSqlParamsUtil {

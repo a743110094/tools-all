@@ -3,7 +3,7 @@ package site.heaven96.validate.util;
 /**
  * 可比实用程序
  *
- * @author lgw3488
+ * @author Heaven96
  * @date 2021/10/24
  */
 public class ComparableUtil {

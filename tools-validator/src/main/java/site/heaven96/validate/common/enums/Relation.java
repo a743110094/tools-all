@@ -6,6 +6,7 @@ package site.heaven96.validate.common.enums;
  * @author Heaven96
  * @date 2021/10/08
  */
+@Deprecated
 public enum Relation {
     /**
      * 一对一

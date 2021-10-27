@@ -6,20 +6,17 @@ import cn.hutool.core.util.StrUtil;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.expression.Expression;
-import org.springframework.expression.ExpressionParser;
-import org.springframework.expression.spel.standard.SpelExpressionParser;
-import org.springframework.expression.spel.support.StandardEvaluationContext;
 import site.heaven96.assertes.common.exception.H4nUnExpectedException;
 import site.heaven96.assertes.util.AssertUtil;
 import site.heaven96.validate.common.annotation.H4nCheck;
 import site.heaven96.validate.common.annotation.H4nUnionCheck;
+import site.heaven96.validate.common.enums.Condition;
 import site.heaven96.validate.common.enums.Logic;
-import site.heaven96.validate.common.enums.Operator;
 import site.heaven96.validate.common.enums.ValueSetOrigin;
 import site.heaven96.validate.service.UnionCheckService;
 import site.heaven96.validate.util.AutoChooseUtil;
 import site.heaven96.validate.util.FieldUtil;
+import site.heaven96.validate.util.SpelUtil;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -104,7 +101,7 @@ public class UnionCheckServiceImpl implements UnionCheckService {
                     });
         });
         ////////////////开始校验
-        //1.判断   Logic.IF/OR_IF/AND_IF条件链  是否成立
+        //1.判断   Condition.IF/OR_IF/AND_IF条件链  是否成立
         AtomicBoolean conditionIsTrue = new AtomicBoolean(true);
         AtomicBoolean resultIsTrue = new AtomicBoolean(true);
         //冗余代码
@@ -113,11 +110,13 @@ public class UnionCheckServiceImpl implements UnionCheckService {
                     H4nCheck check = annotationFieldItem.getH4nCheckAnnontation();
                     Field annotationField = annotationFieldItem.getField();
                     String targetFieldPath = check.field();
-                    Operator operator = check.operator();
+                    Logic logic = check.operator();
                     String[] valueSet = check.valueSet();
-                    Logic logic = check.logic();
+                    Condition condition = check.logic();
                     Object targetFieldPathValue = null;
-                    {
+                    Object beanA = ReflectUtil.getFieldValue(o, annotationField.getName());
+                    targetFieldPathValue = SpelUtil.get(targetFieldPath, beanA);
+                    /*{
                         //创建ExpressionParser解析表达式
                         ExpressionParser parser = new SpelExpressionParser();
                         //SpEL表达式语法设置在parseExpression()入参内
@@ -125,19 +124,19 @@ public class UnionCheckServiceImpl implements UnionCheckService {
                         //执行SpEL表达式，执行的默认Spring容器是Spring本身的容器：ApplicationContext
                         StandardEvaluationContext ctx = new StandardEvaluationContext();
                         //向容器内添加bean
-                        Object beanA = ReflectUtil.getFieldValue(o, annotationField.getName());
+                        //Object beanA = ReflectUtil.getFieldValue(o, annotationField.getName());
                         ctx.setRootObject(beanA);
                         //getValue有参数ctx，从新的容器中根据SpEL表达式获取所需的值
                         targetFieldPathValue = exp.getValue(ctx, Object.class);
                         System.out.println(targetFieldPathValue);
-                    }
+                    }*/
                     boolean b = FieldCheckServiceImpl.filedCheck(
-                            targetFieldPathValue, operator,check.ignoreCase(), valueSet
+                            targetFieldPathValue, logic, check.ignoreCase(), valueSet
                     );
 
-                    if (logic.equals(Logic.IF) || logic.equals(Logic.AND_IF)) {
+                    if (condition.equals(Condition.IF) || condition.equals(Condition.AND_IF)) {
                         conditionIsTrue.set(conditionIsTrue.get() && b);
-                    } else if (logic.equals(Logic.OR_IF)) {
+                    } else if (condition.equals(Condition.OR_IF)) {
                         conditionIsTrue.set(conditionIsTrue.get() || b);
                     } else {
                         throw new H4nUnExpectedException(StrUtil.format(UNKNOWN_CHECK_LOGIC_ERR_MSG, check));
@@ -158,42 +157,25 @@ public class UnionCheckServiceImpl implements UnionCheckService {
                             H4nCheck check = annotationFieldItem.getH4nCheckAnnontation();
                             Field annotationField = annotationFieldItem.getField();
                             String targetFieldPath = check.field();
-                            Operator operator = check.operator();
+                            Logic logic = check.operator();
                             String[] valueSet = check.valueSet();
-                            Logic logic = check.logic();
+                            Condition condition = check.logic();
                             Object targetFieldPathValue = null;
-                            {
-
-                                Object beanA = ReflectUtil.getFieldValue(o, annotationField.getName());
-                                if (beanA instanceof Collection) {
-                                    targetFieldPath = StrUtil.format("#this.![{}]", targetFieldPath);
-                                }
-                                //创建ExpressionParser解析表达式
-                                ExpressionParser parser = new SpelExpressionParser();
-                                //SpEL表达式语法设置在parseExpression()入参内
-                                Expression exp = parser.parseExpression(targetFieldPath);
-                                //执行SpEL表达式，执行的默认Spring容器是Spring本身的容器：ApplicationContext
-                                /**也可以使用非Spring的ApplicationContext容器，则用下面的方法*/
-                                //创建一个虚拟的容器EvaluationContext
-                                StandardEvaluationContext ctx = new StandardEvaluationContext();
-                                ctx.setRootObject(beanA);
-                                //getValue有参数ctx，从新的容器中根据SpEL表达式获取所需的值
-                                targetFieldPathValue = exp.getValue(ctx, Object.class);
-                            }
+                            Object beanA = ReflectUtil.getFieldValue(o, annotationField.getName());
+                            targetFieldPathValue = SpelUtil.get(targetFieldPath, beanA);
                             if (!(targetFieldPathValue instanceof Collection)) {
                                 targetFieldPathValue = Arrays.asList(targetFieldPathValue);
                             }
-
                             if (targetFieldPathValue instanceof Collection) {
                                 Collection collections = (Collection) targetFieldPathValue;
 
                                 collections.stream().forEach(targetFieldPathValueItem -> {
                                     boolean b = FieldCheckServiceImpl.filedCheck(
-                                            targetFieldPathValueItem, operator,check.ignoreCase(), valueSet
+                                            targetFieldPathValueItem, logic, check.ignoreCase(), valueSet
                                     );
-                                    if (logic.equals(Logic.THEN) || logic.equals(Logic.AND_THEN)) {
+                                    if (condition.equals(Condition.THEN) || condition.equals(Condition.AND_THEN)) {
                                         resultIsTrue.set(resultIsTrue.get() && b);
-                                    } else if (logic.equals(Logic.OR_THEN)) {
+                                    } else if (condition.equals(Condition.OR_THEN)) {
                                         resultIsTrue.set(resultIsTrue.get() || b);
                                     } else {
                                         throw new H4nUnExpectedException("构造前提条件错误（未指定Logic）" + check);

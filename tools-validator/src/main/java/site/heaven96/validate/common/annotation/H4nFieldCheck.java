@@ -1,7 +1,7 @@
 package site.heaven96.validate.common.annotation;
 
 
-import site.heaven96.validate.common.enums.Operator;
+import site.heaven96.validate.common.enums.Logic;
 import site.heaven96.validate.common.enums.TypeCheckRule;
 import site.heaven96.validate.common.enums.ValueSetOrigin;
 import site.heaven96.validate.common.validtor.H3cFieldValidtor;
@@ -55,9 +55,9 @@ public @interface H4nFieldCheck{
      * 运算符
      * 表述字段值和valueSet之间的逻辑关系
      *
-     * @return {@code Operator}
+     * @return {@code Logic}
      */
-    Operator operator() default Operator.EQUALS;
+    Logic operator() default Logic.EQUALS;
 
     /**
      * 值集来源

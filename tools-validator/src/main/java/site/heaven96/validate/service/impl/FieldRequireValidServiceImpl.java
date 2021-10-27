@@ -82,13 +82,13 @@ public class FieldRequireValidServiceImpl implements H3cWmsValidateService {
      * @param fieldsA   fieldsA
      * @param fieldsB   fieldsB
      * @param relation  关系
-     * @param operator  操作员
+     * @param logic     操作员
      * @param resultSet 结果集
      * @param obj       参数
      * @return boolean
      */
     @Override
-    public boolean typeValidator(String sql, String[] fieldsA, String[] fieldsB, Relation relation, Operator operator, String[] resultSet, Object obj) {
+    public boolean typeValidator(String sql, String[] fieldsA, String[] fieldsB, Relation relation, Logic logic, String[] resultSet, Object obj) {
         return false;
     }
 

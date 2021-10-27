@@ -39,7 +39,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Result methodArgumentNotValidExceptionHandler(final MethodArgumentNotValidException e) {
-        final String defaultMessage = e.getMessage();
+        final String defaultMessage = e.getBindingResult().getGlobalError().getDefaultMessage();
         return new Result().failed(HttpStatus.PRECONDITION_FAILED, "请求参数验证失败：" + defaultMessage);
     }
 

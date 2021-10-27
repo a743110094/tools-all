@@ -3,7 +3,7 @@ package site.heaven96.validate.lang.handler.operator;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
 import site.heaven96.assertes.util.AssertUtil;
-import site.heaven96.validate.common.enums.Operator;
+import site.heaven96.validate.common.enums.Logic;
 
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
@@ -17,19 +17,19 @@ import java.nio.charset.StandardCharsets;
 public class NumberEqualsFixedValueHandler extends AbstractEqualsFixedValueHandler {
 
     @Override
-    public boolean subHandle(Object obj, Operator operator,Object standardVal) {
-        boolean standardValIsNumber = NumberUtil.isNumber(StrUtil.str(standardVal,StandardCharsets.UTF_8));
+    public boolean subHandle(Object obj, Logic logic, Object standardVal) {
+        boolean standardValIsNumber = NumberUtil.isNumber(StrUtil.str(standardVal, StandardCharsets.UTF_8));
         if (!standardValIsNumber) {
             //下一个处理器
-            AssertUtil.isTrueThrowBeforeExp(nextEqualsHandler()!=null,AE_HANDLER_NOT_MATCHES_ERR_MSG);
-            return nextEqualsHandler().subHandle(obj, operator, standardVal);
+            AssertUtil.isTrueThrowBeforeExp(nextEqualsHandler() != null, AE_HANDLER_NOT_MATCHES_ERR_MSG);
+            return nextEqualsHandler().subHandle(obj, logic, standardVal);
         }
         //标准值
         boolean standardValueIsNumber = obj instanceof Number;
         if (!standardValueIsNumber) {
             //下一个处理器
             AssertUtil.isTrueThrowBeforeExp(nextEqualsHandler()!=null,AE_HANDLER_NOT_MATCHES_ERR_MSG);
-            return nextEqualsHandler().subHandle(obj, operator, standardVal);
+            return nextEqualsHandler().subHandle(obj, logic, standardVal);
         }
         return NumberUtil.equals(new BigDecimal(StrUtil.str(obj, StandardCharsets.UTF_8)),new BigDecimal(StrUtil.str(standardVal,StandardCharsets.UTF_8)));
     }

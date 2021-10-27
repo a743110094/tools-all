@@ -8,7 +8,7 @@ import site.heaven96.validate.common.enums.ValueSetOrigin;
 /**
  * 自动选择实用程序
  *
- * @author lgw3488
+ * @author Heaven96
  * @date 2021/10/22
  */
 public class AutoChooseUtil{
@@ -27,7 +27,11 @@ public class AutoChooseUtil{
      *
      * @param vso 值集来源
      * @param vs  值集
+     * @see site.heaven96.validate.iface.check.obj.AbstractObjCheck
+     * @since 0.0.2
+     * @deprecated
      */
+    @Deprecated
     public static ValueSetOrigin valueSetOrigin(ValueSetOrigin vso, String[] vs) {
         //默认自动判断 但指定的优先级更高
         if (ObjectUtil.notEqual(vso, ValueSetOrigin.AUTO)) {

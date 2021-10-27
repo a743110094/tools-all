@@ -3,7 +3,7 @@ package site.heaven96.validate.common.validtor;
 
 import lombok.extern.slf4j.Slf4j;
 import site.heaven96.validate.common.annotation.H4nTypeCheck;
-import site.heaven96.validate.common.enums.Operator;
+import site.heaven96.validate.common.enums.Logic;
 import site.heaven96.validate.common.enums.Relation;
 import site.heaven96.validate.common.enums.TypeCheckRule;
 import site.heaven96.validate.common.factory.H3cValidtorFactory;
@@ -31,7 +31,7 @@ public class H3cTypeValidtor implements ConstraintValidator<H4nTypeCheck, Object
 
     private Relation relation;
 
-    private Operator operator;
+    private Logic logic;
 
     private String[] resultSet;
 
@@ -60,7 +60,7 @@ public class H3cTypeValidtor implements ConstraintValidator<H4nTypeCheck, Object
         fieldsA = constraintAnnotation.fieldNamesA();
         fieldsB = constraintAnnotation.fieldNamesB();
         relation = constraintAnnotation.relationshipA2B();
-        operator = constraintAnnotation.operator();
+        logic = constraintAnnotation.operator();
         resultSet = constraintAnnotation.resultSet();
         sql = constraintAnnotation.sql();
         if (h3cWmsValidateService == null) {
@@ -93,7 +93,7 @@ public class H3cTypeValidtor implements ConstraintValidator<H4nTypeCheck, Object
             h3cWmsValidateService = H3cValidtorFactory.getInstance("H3cWmsValidateServiceImpl");
         }
         if (rule.equals(TypeCheckRule.自定义)) {
-            return h3cWmsValidateService.typeValidator(sql, fieldsA, fieldsB, relation, operator, resultSet, obj);
+            return h3cWmsValidateService.typeValidator(sql, fieldsA, fieldsB, relation, logic, resultSet, obj);
         } else {
             return h3cWmsValidateService.typeValidator(rule, fieldNames, obj);
         }

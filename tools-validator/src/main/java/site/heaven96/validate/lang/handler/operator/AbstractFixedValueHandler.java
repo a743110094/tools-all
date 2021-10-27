@@ -1,6 +1,6 @@
 package site.heaven96.validate.lang.handler.operator;
 
-import site.heaven96.validate.common.enums.Operator;
+import site.heaven96.validate.common.enums.Logic;
 
 import javax.validation.constraints.NotNull;
 
@@ -45,10 +45,10 @@ public abstract class AbstractFixedValueHandler {
      *
      * @param valueSet 值集
      * @param obj      OBJ
-     * @param operator 运算符
+     * @param logic    运算符
      * @return boolean
      */
-    public abstract boolean handle(Object obj, @NotNull final Operator operator,
+    public abstract boolean handle(Object obj, @NotNull final Logic logic,
                                    @NotNull final Object[] valueSet);
 
 }

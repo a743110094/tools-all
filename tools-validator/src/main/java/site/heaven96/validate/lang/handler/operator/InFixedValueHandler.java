@@ -4,7 +4,7 @@ import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ObjectUtil;
 import site.heaven96.assertes.common.exception.H4nBeforeValidateCheckException;
 import site.heaven96.assertes.util.AssertUtil;
-import site.heaven96.validate.common.enums.Operator;
+import site.heaven96.validate.common.enums.Logic;
 import site.heaven96.validate.util.DateUtil;
 
 import javax.validation.constraints.NotNull;
@@ -25,26 +25,27 @@ public class InFixedValueHandler extends AbstractFixedValueHandler {
 
     /**
      * 处理请求
-     * @apiNote 在某个给定直接内 可以是字符串 数字 日期
-     *          如：1是否在{1,2,3,4,5}内
-     *              "admin"是否在{"admin","a"}内
+     *
      * @param obj      OBJ
-     * @param operator 运算符
+     * @param logic    运算符
      * @param valueSet 值集
      * @return boolean
+     * @apiNote 在某个给定直接内 可以是字符串 数字 日期
+     * 如：1是否在{1,2,3,4,5}内
+     * "admin"是否在{"admin","a"}内
      */
     @Override
-    public boolean handle(Object obj, Operator operator, @NotNull Object[] valueSet) {
-        if (ObjectUtil.notEqual(operator,Operator.IN)){
+    public boolean handle(Object obj, Logic logic, @NotNull Object[] valueSet) {
+        if (ObjectUtil.notEqual(logic, Logic.IN)) {
             //不是In类的比较 传递给责任链的下一环
-            AssertUtil.isTrueThrowBeforeExp(ObjectUtil.isNotNull(getNext()),FCV_NO_MATCHED_HANDLER_ERR_MSG);
-            return getNext().handle(obj, operator, valueSet);
+            AssertUtil.isTrueThrowBeforeExp(ObjectUtil.isNotNull(getNext()), FCV_NO_MATCHED_HANDLER_ERR_MSG);
+            return getNext().handle(obj, logic, valueSet);
         }
-        if(ArrayUtil.isEmpty(valueSet)){
+        if (ArrayUtil.isEmpty(valueSet)) {
             //值集为空直接false
             return false;
         }
-        if (obj instanceof Number || obj instanceof String || DateUtil.isDate(obj) ) {
+        if (obj instanceof Number || obj instanceof String || DateUtil.isDate(obj)) {
             //只针对部分数据类型有效
             if (obj instanceof Number){
 

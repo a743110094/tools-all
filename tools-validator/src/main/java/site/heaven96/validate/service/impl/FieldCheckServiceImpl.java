@@ -6,7 +6,7 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 import site.heaven96.assertes.common.exception.H4nBeforeValidateCheckException;
-import site.heaven96.validate.common.enums.Operator;
+import site.heaven96.validate.common.enums.Logic;
 import site.heaven96.validate.common.enums.TypeCheckRule;
 import site.heaven96.validate.common.enums.ValueSetOrigin;
 import site.heaven96.validate.service.FieldCheckService;
@@ -53,24 +53,26 @@ public class FieldCheckServiceImpl implements FieldCheckService {
     /**
      * Fun10 固定值校验
      *
-     * @see {@filedCheck}
      * @param obj      OBJ
      * @param valueSet 值集
-     * @param operator 操作员
+     * @param logic    操作员
      * @return boolean
+     * @see {@filedCheck}
      */
     @Deprecated
-    public static boolean fun10(Object obj, Operator operator, String[] valueSet) {
+    public static boolean fun10(Object obj, Logic logic, String[] valueSet) {
         if (valueSet.length == 0) {
             return false;
         }
-        switch (operator) {
-            case EQUALS: {}
+        switch (logic) {
+            case EQUALS: {
+            }
             case IN: {
 //针对字符 字符串
                 return Arrays.stream(valueSet).anyMatch(str -> ObjectUtil.equals(obj, str) || NumberUtil.equals(new BigDecimal(StrUtil.str(obj, StandardCharsets.UTF_8)), new BigDecimal(str)));
             }
-            case NOT_EQUALS: {}
+            case NOT_EQUALS: {
+            }
             case NOT_IN: {
                 return Arrays.stream(valueSet).noneMatch(str -> ObjectUtil.equals(obj, str) || NumberUtil.equals(new BigDecimal(StrUtil.str(obj, StandardCharsets.UTF_8)), new BigDecimal(str)));
             }
@@ -120,27 +122,41 @@ public class FieldCheckServiceImpl implements FieldCheckService {
 
     /**
      * 单Field检查
-     * @date 2021年10月23日 02:31:24
+     *
      * @param obj      OBJ
-     * @param operator 操作员
+     * @param logic    操作员
      * @param valueSet 值集
      * @return boolean
+     * @date 2021年10月23日 02:31:24
      */
-    public static boolean filedCheck(Object obj, Operator operator,boolean ignoreCase, String[] valueSet) {
-        if (ArrayUtil.isEmpty(valueSet)) {
+    public static boolean filedCheck(Object obj, Logic logic, boolean ignoreCase, String[] valueSet) {
+        if (logic.isRequireValueSet() && ArrayUtil.isEmpty(valueSet)) {
             return false;
         }
-        switch (operator) {
+        switch (logic) {
+            case HAS_TEXT: {
+                return H4nCompareUtil.hasText(obj);
+            }
+            case HAS_NO_TEXT: {
+                return H4nCompareUtil.hasNoText(obj);
+            }
+            case IS_NULL: {
+                return ObjectUtil.isNull(obj);
+            }
+            case NOT_NULL: {
+                return ObjectUtil.isNotNull(obj);
+            }
             case EQUALS: {
-                return H4nCompareUtil.equalsB(obj,valueSet[0],ignoreCase);
+                return H4nCompareUtil.equalsB(obj, valueSet[0], ignoreCase);
             }
             case IN: {
-                //针对 字符串
-                return H4nCompareUtil.equals(obj,valueSet);
+                //针对 字符串 数字 等对象  比如部门必须是XXX  出生年必须是xxxx和XXXX
+                return H4nCompareUtil.In(obj, valueSet, ignoreCase);
             }
-            case NOT_EQUALS: {}
+            case NOT_EQUALS: {
+            }
             case NOT_IN: {
-                return Arrays.stream(valueSet).noneMatch(str -> H4nCompareUtil.equalsB(obj,str,ignoreCase));
+                return H4nCompareUtil.notIn(obj, valueSet, ignoreCase);
             }
             case LESS_THAN: {
                 //比较结果，如果c1 < c2，返回数小于0，c1==c2返回0，c1 > c2 大于0
@@ -187,16 +203,13 @@ public class FieldCheckServiceImpl implements FieldCheckService {
     }
 
 
-
-
-
     /**
      * 检查
      * 检查入口
      *
      * @param rule               规则
      * @param fieldRealName      字段实名
-     * @param operator           逻辑运算符
+     * @param logic              逻辑运算符
      * @param valueSetOrigin     值集来源
      * @param valueSet           静态值集
      * @param sql                SQL
@@ -207,9 +220,9 @@ public class FieldCheckServiceImpl implements FieldCheckService {
      * @return boolean
      */
     @Override
-    public boolean check(Object obj, TypeCheckRule rule, String fieldRealName, Operator operator, ValueSetOrigin valueSetOrigin, String[] valueSet, String sql, String[] sqlParams, String appendSql, String[] refRetSetFieldName) {
+    public boolean check(Object obj, TypeCheckRule rule, String fieldRealName, Logic logic, ValueSetOrigin valueSetOrigin, String[] valueSet, String sql, String[] sqlParams, String appendSql, String[] refRetSetFieldName) {
         /** 打印日志 */
-        logger(obj, rule, fieldRealName, operator, valueSetOrigin, valueSet, sql, sqlParams, appendSql, refRetSetFieldName);
+        logger(obj, rule, fieldRealName, logic, valueSetOrigin, valueSet, sql, sqlParams, appendSql, refRetSetFieldName);
         /** 验证结果 */
         boolean flag = false;
         /** 计算用于最后验证的值集合 */
@@ -218,14 +231,14 @@ public class FieldCheckServiceImpl implements FieldCheckService {
             case FIXED_VALUE: {
                 //Assert.notNull(obj, 进行验证的值为空);
                 //遍历固定值集寻找字段值
-                flag = fun10(obj, operator, valueSet);
+                flag = fun10(obj, logic, valueSet);
                 break;
             }
             case DYNAMIC_SPECIFIED_VALUE:
             case SQL_RESULTS: {
                 //TODO 推后 因为无法取到参数
                 //TODO 收不到动态参数 暂时
-                flag = fun20(obj, operator, sql);
+                flag = fun20(obj, logic, sql);
                 break;
                 //throw new H4nBeforeValidateCheckException(FIELD_UNSUPPORT_NOW_ERR_MSG);
             }
@@ -239,9 +252,9 @@ public class FieldCheckServiceImpl implements FieldCheckService {
     }
 
     //TODO//TODO//TODO//TODO
-    public boolean check2(Object obj, TypeCheckRule rule, String fieldRealName, Operator operator, ValueSetOrigin valueSetOrigin, String[] valueSet, String sql, String[] sqlParams, String appendSql, String[] refRetSetFieldName) {
+    public boolean check2(Object obj, TypeCheckRule rule, String fieldRealName, Logic logic, ValueSetOrigin valueSetOrigin, String[] valueSet, String sql, String[] sqlParams, String appendSql, String[] refRetSetFieldName) {
         /** 打印日志 */
-        logger(obj, rule, fieldRealName, operator, valueSetOrigin, valueSet, sql, sqlParams, appendSql, refRetSetFieldName);
+        logger(obj, rule, fieldRealName, logic, valueSetOrigin, valueSet, sql, sqlParams, appendSql, refRetSetFieldName);
         /** 验证结果 */
         boolean flag = false;
         /** 计算用于最后验证的值集合 */
@@ -251,14 +264,14 @@ public class FieldCheckServiceImpl implements FieldCheckService {
             case FIXED_VALUE: {
                 //Assert.notNull(obj, 进行验证的值为空);
                 //遍历固定值集寻找字段值
-                flag = fun10(obj, operator, valueSet);
+                flag = fun10(obj, logic, valueSet);
                 break;
             }
             case DYNAMIC_SPECIFIED_VALUE:
             case SQL_RESULTS: {
                 //TODO 推后 因为无法取到参数
                 //TODO 收不到动态参数 暂时
-                flag = fun20(obj, operator, sql);
+                flag = fun20(obj, logic, sql);
                 break;
                 //throw new H4nBeforeValidateCheckException(FIELD_UNSUPPORT_NOW_ERR_MSG);
             }
@@ -276,7 +289,7 @@ public class FieldCheckServiceImpl implements FieldCheckService {
      *
      * @return {@code List<String>}
      */
-    private List<String> valueList(String fieldRealName, Operator operator, ValueSetOrigin valueSetOrigin,
+    private List<String> valueList(String fieldRealName, Logic logic, ValueSetOrigin valueSetOrigin,
                                    String[] valueSet, String sql, String[] sqlParams, String appendSql,
                                    String[] refRetSetFieldName) {
         List<String> valueList = new ArrayList<>();
@@ -313,22 +326,22 @@ public class FieldCheckServiceImpl implements FieldCheckService {
     /**
      * Fun20
      *
-     * @param obj      OBJ
-     * @param operator 操作员
-     * @param sql      SQL
+     * @param obj   OBJ
+     * @param logic 操作员
+     * @param sql   SQL
      * @return boolean
      */
     //todo  fieldRealName sqlParams appendSql refRetSetFieldName
-    public boolean fun20(Object obj, Operator operator, String sql) {
+    public boolean fun20(Object obj, Logic logic, String sql) {
         List<String> strings = SqlExecutor.selectStrs(sql);
         String[] objects = strings.toArray(new String[strings.size()]);
-        return fun10(obj, operator, objects);
+        return fun10(obj, logic, objects);
     }
 
     /**
      * 记录器
      */
-    private void logger(Object obj, TypeCheckRule rule, String fieldRealName, Operator operator,
+    private void logger(Object obj, TypeCheckRule rule, String fieldRealName, Logic logic,
                         ValueSetOrigin valueSetOrigin, String[] valueSet, String sql, String[] sqlParams,
                         String appendSql, String[] refRetSetFieldName) {
       /*  涉及字段[{}] 字段值[{}] " +

@@ -1,7 +1,10 @@
 package site.heaven96.example.vo.union;
 
 
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import site.heaven96.example.entity.union.Department;
 import site.heaven96.example.entity.union.Employee;
 import site.heaven96.validate.common.annotation.H4nCheck;
@@ -10,10 +13,10 @@ import site.heaven96.validate.common.annotation.H4nUnionCheck;
 import javax.validation.Valid;
 import java.util.List;
 
-import static site.heaven96.validate.common.enums.Logic.IF;
-import static site.heaven96.validate.common.enums.Logic.THEN;
-import static site.heaven96.validate.common.enums.Operator.EQUALS;
-import static site.heaven96.validate.common.enums.Operator.GREATER_THAN;
+import static site.heaven96.validate.common.enums.Condition.IF;
+import static site.heaven96.validate.common.enums.Condition.THEN;
+import static site.heaven96.validate.common.enums.Logic.EQUALS;
+import static site.heaven96.validate.common.enums.Logic.GREATER_THAN;
 
 /**
  * 部门员工VO
@@ -21,7 +24,10 @@ import static site.heaven96.validate.common.enums.Operator.GREATER_THAN;
  * @author Heaven96
  * @date 2021/10/13
  */
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
 @H4nUnionCheck(message = "管理部的崽，大于40岁才可以(SQL)")
 
 public class DepartmentEmployeeVo3 {

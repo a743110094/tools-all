@@ -2,11 +2,17 @@ package site.heaven96.example.entity.single;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import site.heaven96.validate.common.annotation.H4nFieldCheck;
 import site.heaven96.validate.common.enums.ValueSetOrigin;
 
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
 public class Student {
 
     @H4nFieldCheck(

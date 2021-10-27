@@ -1,7 +1,8 @@
 package site.heaven96.example.entity.union;
 
-import lombok.Data;
+import lombok.*;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -11,8 +12,13 @@ import java.util.Date;
  * @author Heaven96
  * @date 2021/10/13
  */
-@Data
-public class Employee {
+@Getter
+@Setter
+@EqualsAndHashCode
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
+public class Employee implements Serializable {
     /**
      * ID号
      */
@@ -35,4 +41,5 @@ public class Employee {
      * 出生日期
      */
     private Date dateOfBirth;
+
 }

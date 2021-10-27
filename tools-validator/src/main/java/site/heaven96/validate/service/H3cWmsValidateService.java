@@ -36,11 +36,11 @@ public interface H3cWmsValidateService {
      * @param relation  关系
      * @param obj       参数
      * @param sql       SQL
-     * @param operator  操作员
+     * @param logic     操作员
      * @param resultSet 结果集
      * @return boolean
      */
-    boolean typeValidator(String sql, String[] fieldsA, String[] fieldsB, Relation relation, Operator operator, String[] resultSet, Object obj);
+    boolean typeValidator(String sql, String[] fieldsA, String[] fieldsB, Relation relation, Logic logic, String[] resultSet, Object obj);
 
 
     /**

@@ -5,7 +5,7 @@ import cn.hutool.core.util.ReflectUtil;
 import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import lombok.extern.slf4j.Slf4j;
 import site.heaven96.validate.common.annotation.H4nFieldCheck;
-import site.heaven96.validate.common.enums.Operator;
+import site.heaven96.validate.common.enums.Logic;
 import site.heaven96.validate.common.enums.TypeCheckRule;
 import site.heaven96.validate.common.enums.ValueSetOrigin;
 import site.heaven96.validate.service.FieldCheckService;
@@ -27,7 +27,7 @@ public class H3cFieldValidtor implements ConstraintValidator<H4nFieldCheck, Obje
     private static final String DEFAULT_SQL = "SELECT 1 FROM APPS.ORG_ORGANIZATION_DEFINITIONS ood WHERE ood.ORGANIZATION_ID = {} AND ood.DISABLE_DATE IS NULL AND ood.INVENTORY_ENABLED_FLAG = 'Y'";
     private TypeCheckRule rule;
     private String fieldRealName;
-    private Operator operator;
+    private Logic logic;
     private ValueSetOrigin valueSetOrigin;
     private String[] valueSet;
     private String sql;
@@ -53,7 +53,7 @@ public class H3cFieldValidtor implements ConstraintValidator<H4nFieldCheck, Obje
     public void initialize(H4nFieldCheck constraintAnnotation) {
         rule = constraintAnnotation.rule();
         fieldRealName = constraintAnnotation.columns();
-        operator = constraintAnnotation.operator();
+        logic = constraintAnnotation.operator();
         valueSetOrigin = constraintAnnotation.valueSetOrigin();
         valueSet = constraintAnnotation.valueSet();
         sql = constraintAnnotation.sql();
@@ -97,7 +97,7 @@ public class H3cFieldValidtor implements ConstraintValidator<H4nFieldCheck, Obje
                 if (fieldCheckService == null) {
                     fieldCheckService = ReflectUtil.newInstance(FieldCheckServiceImpl.class);
                 }
-                return fieldCheckService.check(obj, rule, fieldRealName, operator, valueSetOrigin
+                return fieldCheckService.check(obj, rule, fieldRealName, logic, valueSetOrigin
                         , valueSet, sql, sqlParams, appendSql, refRetSetFieldName);
             }
         }

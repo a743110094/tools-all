@@ -1,6 +1,11 @@
 package site.heaven96.example.entity.union;
 
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+import java.io.Serializable;
 
 /**
  * 部门
@@ -8,8 +13,11 @@ import lombok.Data;
  * @author Heaven96
  * @date 2021/10/13
  */
-@Data
-public class Department {
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
+public class Department implements Serializable {
     /**
      * ID号
      */
@@ -18,4 +26,5 @@ public class Department {
      * 名字
      */
     private String name;
+
 }

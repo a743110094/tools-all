@@ -1,7 +1,7 @@
 package site.heaven96.validate.lang.handler.operator;
 
 import site.heaven96.assertes.util.AssertUtil;
-import site.heaven96.validate.common.enums.Operator;
+import site.heaven96.validate.common.enums.Logic;
 
 import javax.validation.constraints.NotNull;
 
@@ -19,29 +19,29 @@ public abstract class AbstractBetweenAndFixedValueHandler extends AbstractFixedV
         this.nextAbstractBetweenAndHandler = next;
     }
 
-    private boolean toHandler(Object obj, Operator operator, @NotNull Object[] valueSet){
+    private boolean toHandler(Object obj, Logic logic, @NotNull Object[] valueSet) {
         AbstractBetweenAndFixedValueHandler handler1 = new NumberBetweenAndFixedValueHandler();
         AbstractBetweenAndFixedValueHandler handler2 = new DateBetweenAndFixedValueHandler();
         handler1.setNextBetweenAndHandler(handler2);
-        return handler1.subHandle(obj, operator, valueSet);
+        return handler1.subHandle(obj, logic, valueSet);
     }
 
-    public abstract boolean subHandle(Object obj, Operator operator, @NotNull Object[] valueSet);
+    public abstract boolean subHandle(Object obj, Logic logic, @NotNull Object[] valueSet);
 
     /**
      * 处理请求
      *
      * @param obj      OBJ
-     * @param operator 运算符
+     * @param logic    运算符
      * @param valueSet 值集
      * @return boolean
      */
     @Override
-    public boolean handle(Object obj, Operator operator, @NotNull Object[] valueSet){
-        if (Operator.BETWEEN_AND != operator) {
-            AssertUtil.isTrueThrowBeforeExp(getNext()!=null,FCV_NO_MATCHED_HANDLER_ERR_MSG);
-            return getNext().handle(obj, operator, valueSet);
+    public boolean handle(Object obj, Logic logic, @NotNull Object[] valueSet) {
+        if (Logic.BETWEEN_AND != logic) {
+            AssertUtil.isTrueThrowBeforeExp(getNext() != null, FCV_NO_MATCHED_HANDLER_ERR_MSG);
+            return getNext().handle(obj, logic, valueSet);
         }
-        return toHandler(obj, operator, valueSet);
+        return toHandler(obj, logic, valueSet);
     }
 }

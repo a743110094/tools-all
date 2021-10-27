@@ -1,6 +1,6 @@
 package site.heaven96.validate.service;
 
-import site.heaven96.validate.common.enums.Operator;
+import site.heaven96.validate.common.enums.Logic;
 import site.heaven96.validate.common.enums.TypeCheckRule;
 import site.heaven96.validate.common.enums.ValueSetOrigin;
 
@@ -17,7 +17,7 @@ public interface FieldCheckService {
      *
      * @param rule               规则
      * @param fieldRealName      字段实名
-     * @param operator           逻辑运算符
+     * @param logic              逻辑运算符
      * @param valueSetOrigin     值集来源
      * @param valueSet           静态值集
      * @param sql                SQL
@@ -30,7 +30,7 @@ public interface FieldCheckService {
     boolean check(Object obj,
                   TypeCheckRule rule,
                   String fieldRealName,
-                  Operator operator,
+                  Logic logic,
                   ValueSetOrigin valueSetOrigin,
                   String[] valueSet,
                   String sql,
