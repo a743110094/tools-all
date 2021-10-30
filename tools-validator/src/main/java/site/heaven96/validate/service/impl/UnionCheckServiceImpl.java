@@ -127,7 +127,8 @@ public class UnionCheckServiceImpl implements UnionCheckService {
                     } else {
                         throw new H4nUnExpectedException(StrUtil.format(UNKNOWN_CHECK_LOGIC_ERR_MSG, check));
                     }
-                    if (!conditionIsTrue.get()) {
+                    if (resultIsTrue.get() == false) {
+                        //快速校验  遇到失败就退出
                         return;
                     }
                 }
@@ -166,7 +167,8 @@ public class UnionCheckServiceImpl implements UnionCheckService {
                                     } else {
                                         throw new H4nUnExpectedException("构造前提条件错误（未指定Logic）" + check);
                                     }
-                                    if (!resultIsTrue.get()) {
+                                    if (resultIsTrue.get() == false) {
+                                        //快速校验  遇到失败就退出
                                         return;
                                     }
                                 });

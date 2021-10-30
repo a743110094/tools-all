@@ -16,11 +16,12 @@ public class UnionCheckerImpl extends AbObjectChecker<H4nUnionCheck> {
      *
      * @param annotation   注解
      * @param beCheckedObj 被检查对象
-     * @param legal        合法值（集）
      * @return boolean
      */
     @Override
-    public boolean check(H4nUnionCheck annotation, Object beCheckedObj, Object[] legal) {
+    public boolean check(H4nUnionCheck annotation, Object beCheckedObj) {
+        //找本组的
+        Object legalValSet = getValSet(annotation.valueSetOrigin(), annotation.valueSet(), beCheckedObj);
         return false;
     }
 }

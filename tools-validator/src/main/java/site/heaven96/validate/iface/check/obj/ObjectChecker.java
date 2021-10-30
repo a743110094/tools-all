@@ -34,7 +34,7 @@ public interface ObjectChecker<A extends Annotation> {
      * @param origin 合法值集来源
      * @return {@code LegalOrigin}
      */
-    default LegalOrigin getValSetOrigin(LegalOrigin origin, String[] legal) {
+    default LegalOrigin getLegalOrigin(LegalOrigin origin, String[] legal) {
         //指定来源 优先级更高
         if (ObjectUtil.notEqual(origin, LegalOrigin.AUTO)) {
             return origin;
@@ -60,9 +60,8 @@ public interface ObjectChecker<A extends Annotation> {
      * 检查
      *
      * @param beCheckedObj 被检查对象
-     * @param legal        合法值（集）
      * @param annotation   注解
      * @return boolean
      */
-    boolean check(A annotation, Object beCheckedObj, Object[] legal);
+    boolean check(A annotation, Object beCheckedObj);
 }

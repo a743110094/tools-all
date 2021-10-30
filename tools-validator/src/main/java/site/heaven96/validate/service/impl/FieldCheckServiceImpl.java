@@ -37,6 +37,7 @@ import java.util.stream.Collectors;
  */
 //TODO 测试
 @Slf4j(topic = "[字段校验服务 FieldCheckServiceImpl]")
+@Deprecated
 public class FieldCheckServiceImpl implements FieldCheckService {
 
     public static final String FEILD_ENTRACE_LOG_MSG =

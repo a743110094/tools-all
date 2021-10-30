@@ -1,16 +1,12 @@
 package site.heaven96.validate.util;
 
-import cn.hutool.cache.Cache;
-import cn.hutool.cache.CacheUtil;
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.ObjectUtil;
 import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.util.Collection;
 
 /**
@@ -24,53 +20,30 @@ public class SpelUtil {
     private static final String REGEX = "#{1}\\{(\\w*\\.*\\w*){1,3}}";
     private static final String COLL_SPEL_MARK = "[all].";
     private static final int COLL_SPEL_MARK_LEN = COLL_SPEL_MARK.length();
-
     private static final char POINT = '.';
 
-    private static final Cache<String, Object> cache = CacheUtil.newLFUCache(50, 30 * 60 * 1000);
-
     /**
-     * 到达
-     * <p>
-     * 注意：
-     * #this.employees[all].name
-     * #this.employees[0].name
-     * 的区别
+     * 根据表达式获取值<br>
+     *
+     * <b>注意区别：</b><br>
+     * <li>#this.employees[all].name 获取数组中<b>所有</b>职员的名字<br>
+     * <li>#this.employees[0].name 获取数组中<b>第一个</b>职员的名字<br>
      *
      * @param expression 表达式
      * @param obj        OBJ
      * @return {@code Object}
      */
     public static Object get(@NotNull String expression, Object obj) {
-        if (obj instanceof Serializable) {
-            Object cache = getCache(expression, (Serializable) obj);
-            if (ObjectUtil.isNotNull(cache)) {
-                return cache;
-            }
-        }
         /*表达式要求返回集合*/
         int index = expression.indexOf(COLL_SPEL_MARK);
         boolean isColl = index != -1;
-        // boolean isColl = expression.contains(COLL_SPEL_MARK);
-        Object retObj = null;
-//        if (!isColl) {
-//            return parse(expression, obj);
-//        }
-        if (!isColl) {
-            retObj = parse(expression, obj);
-        }
-        //集合 先取出集合 再取集合的属性
-        /* 截取[all] 之前的*/
-        //  retObj = parse(StrUtil.subBefore(expression, COLL_SPEL_MARK,true), obj);
         if (isColl) {
-
-            retObj = parse(expression.substring(0, index), obj);
-            retObj = CollUtil.getFieldValues((Collection) retObj, expression.substring(index + COLL_SPEL_MARK_LEN));
+            String collExp = expression.substring(0, index);
+            String collPropertyExp = expression.substring(index + COLL_SPEL_MARK_LEN);
+            //集合 先取出集合 再取集合的属性
+            return CollUtil.getFieldValues((Collection) parse(collExp, obj), collPropertyExp);
         }
-        if (obj instanceof Serializable) {
-            cache.put(new StringBuilder(expression).append(obj.hashCode()).toString(), retObj);
-        }
-        return retObj;
+        return parse(expression, obj);
     }
 
     /**
@@ -94,16 +67,4 @@ public class SpelUtil {
         return result;
     }
 
-    /**
-     * 读PUT缓存
-     * 读写缓存
-     * 尝试读  读到返回对象  没读到返回 null
-     *
-     * @param expression 表达式
-     * @param obj        对象
-     * @return boolean
-     */
-    private static Object getCache(String expression, Serializable obj) {
-        return cache.get(new StringBuilder(expression).append(obj.hashCode()).toString());
-    }
 }
