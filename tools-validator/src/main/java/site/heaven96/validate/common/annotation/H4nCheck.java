@@ -2,8 +2,8 @@ package site.heaven96.validate.common.annotation;
 
 import org.springframework.core.annotation.Order;
 import site.heaven96.validate.common.enums.Condition;
+import site.heaven96.validate.common.enums.LegalOrigin;
 import site.heaven96.validate.common.enums.Logic;
-import site.heaven96.validate.common.enums.ValueSetOrigin;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Repeatable;
@@ -64,16 +64,16 @@ public @interface H4nCheck{
     /**
      * 值集来源
      *
-     * @ValueSetOrigin.FIXED_VALUE //TODO 基于此分路判断 可以考虑淘汰此字段  {} 的是固定值  #{}是取别的属性值  SELECT 开头为sql
+     * @return {@code LegalOrigin}
      */
-    ValueSetOrigin valueSetOrigin() default ValueSetOrigin.AUTO;
+    LegalOrigin origin() default LegalOrigin.AUTO;
 
     /**
-     * 值集
+     * 合法值（集）
      *
      * @return {@code String[]}
      */
-    String[] valueSet() default {};
+    String[] legal() default {};
 
     /**
      * 属性注释 字段的含义 用于打印日志

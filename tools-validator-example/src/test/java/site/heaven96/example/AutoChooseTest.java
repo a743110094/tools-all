@@ -3,7 +3,7 @@ package site.heaven96.example;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.BlockJUnit4ClassRunner;
-import site.heaven96.validate.common.enums.ValueSetOrigin;
+import site.heaven96.validate.common.enums.LegalOrigin;
 import site.heaven96.validate.util.AutoChooseUtil;
 
 @RunWith(BlockJUnit4ClassRunner.class)
@@ -11,7 +11,7 @@ public class AutoChooseTest {
 
     @Test
     public void test1(){
-        ValueSetOrigin auto = ValueSetOrigin.AUTO;
+        LegalOrigin auto = LegalOrigin.AUTO;
 
         System.out.println(AutoChooseUtil.valueSetOrigin(auto,new String[]{"SELECT"}));
         System.out.println(AutoChooseUtil.valueSetOrigin(auto,new String[]{"SELECT * from dual"}));

@@ -1,7 +1,7 @@
 package site.heaven96.validate.common.annotation;
 
+import site.heaven96.validate.common.enums.LegalOrigin;
 import site.heaven96.validate.common.enums.Logic;
-import site.heaven96.validate.common.enums.ValueSetOrigin;
 import site.heaven96.validate.common.validtor.H4nUnionCheckValidator;
 
 import javax.validation.Constraint;
@@ -50,7 +50,7 @@ public @interface H4nUnionCheck {
      *
      * @ValueSetOrigin.FIXED_VALUE //TODO 基于此分路判断
      */
-    ValueSetOrigin valueSetOrigin() default ValueSetOrigin.AUTO;
+    LegalOrigin valueSetOrigin() default LegalOrigin.AUTO;
 
     /**
      * 值集

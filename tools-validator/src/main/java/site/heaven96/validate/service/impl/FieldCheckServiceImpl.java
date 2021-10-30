@@ -6,9 +6,9 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 import site.heaven96.assertes.common.exception.H4nBeforeValidateCheckException;
+import site.heaven96.validate.common.enums.LegalOrigin;
 import site.heaven96.validate.common.enums.Logic;
 import site.heaven96.validate.common.enums.TypeCheckRule;
-import site.heaven96.validate.common.enums.ValueSetOrigin;
 import site.heaven96.validate.service.FieldCheckService;
 import site.heaven96.validate.util.H4nCompareUtil;
 import site.heaven96.validate.util.SqlExecutor;
@@ -46,7 +46,7 @@ public class FieldCheckServiceImpl implements FieldCheckService {
                     "\n =>静态值集[{}] " +
                     "\n =>动态值集[{}] " +
                     "\n =>sql[{}] ";
-    public static final String FEILD_UNDEFIND_VALUE_SET_ORIGIN_ERR_MSG = "==>进行字段校验时，未指定值集来源（ValueSetOrigin）";
+    public static final String FEILD_UNDEFIND_VALUE_SET_ORIGIN_ERR_MSG = "==>进行字段校验时，未指定值集来源（LegalOrigin）";
     public static final String FIELD_UNSUPPORT_NOW_ERR_MSG = "暂不支持";
     public static final String 进行验证的值为空 = "进行验证的值为空";
 
@@ -210,7 +210,7 @@ public class FieldCheckServiceImpl implements FieldCheckService {
      * @param rule               规则
      * @param fieldRealName      字段实名
      * @param logic              逻辑运算符
-     * @param valueSetOrigin     值集来源
+     * @param legalOrigin        值集来源
      * @param valueSet           静态值集
      * @param sql                SQL
      * @param sqlParams          SQL参数
@@ -220,22 +220,22 @@ public class FieldCheckServiceImpl implements FieldCheckService {
      * @return boolean
      */
     @Override
-    public boolean check(Object obj, TypeCheckRule rule, String fieldRealName, Logic logic, ValueSetOrigin valueSetOrigin, String[] valueSet, String sql, String[] sqlParams, String appendSql, String[] refRetSetFieldName) {
+    public boolean check(Object obj, TypeCheckRule rule, String fieldRealName, Logic logic, LegalOrigin legalOrigin, String[] valueSet, String sql, String[] sqlParams, String appendSql, String[] refRetSetFieldName) {
         /** 打印日志 */
-        logger(obj, rule, fieldRealName, logic, valueSetOrigin, valueSet, sql, sqlParams, appendSql, refRetSetFieldName);
+        logger(obj, rule, fieldRealName, logic, legalOrigin, valueSet, sql, sqlParams, appendSql, refRetSetFieldName);
         /** 验证结果 */
         boolean flag = false;
         /** 计算用于最后验证的值集合 */
         List<Object> valueList = new ArrayList<>();
-        switch (valueSetOrigin) {
-            case FIXED_VALUE: {
+        switch (legalOrigin) {
+            case FIXED: {
                 //Assert.notNull(obj, 进行验证的值为空);
                 //遍历固定值集寻找字段值
                 flag = fun10(obj, logic, valueSet);
                 break;
             }
-            case DYNAMIC_SPECIFIED_VALUE:
-            case SQL_RESULTS: {
+            case DYNAMIC:
+            case SQL: {
                 //TODO 推后 因为无法取到参数
                 //TODO 收不到动态参数 暂时
                 flag = fun20(obj, logic, sql);
@@ -252,23 +252,23 @@ public class FieldCheckServiceImpl implements FieldCheckService {
     }
 
     //TODO//TODO//TODO//TODO
-    public boolean check2(Object obj, TypeCheckRule rule, String fieldRealName, Logic logic, ValueSetOrigin valueSetOrigin, String[] valueSet, String sql, String[] sqlParams, String appendSql, String[] refRetSetFieldName) {
+    public boolean check2(Object obj, TypeCheckRule rule, String fieldRealName, Logic logic, LegalOrigin legalOrigin, String[] valueSet, String sql, String[] sqlParams, String appendSql, String[] refRetSetFieldName) {
         /** 打印日志 */
-        logger(obj, rule, fieldRealName, logic, valueSetOrigin, valueSet, sql, sqlParams, appendSql, refRetSetFieldName);
+        logger(obj, rule, fieldRealName, logic, legalOrigin, valueSet, sql, sqlParams, appendSql, refRetSetFieldName);
         /** 验证结果 */
         boolean flag = false;
         /** 计算用于最后验证的值集合 */
         List<String> valueList = new ArrayList<>();
 
-        switch (valueSetOrigin) {
-            case FIXED_VALUE: {
+        switch (legalOrigin) {
+            case FIXED: {
                 //Assert.notNull(obj, 进行验证的值为空);
                 //遍历固定值集寻找字段值
                 flag = fun10(obj, logic, valueSet);
                 break;
             }
-            case DYNAMIC_SPECIFIED_VALUE:
-            case SQL_RESULTS: {
+            case DYNAMIC:
+            case SQL: {
                 //TODO 推后 因为无法取到参数
                 //TODO 收不到动态参数 暂时
                 flag = fun20(obj, logic, sql);
@@ -289,14 +289,14 @@ public class FieldCheckServiceImpl implements FieldCheckService {
      *
      * @return {@code List<String>}
      */
-    private List<String> valueList(String fieldRealName, Logic logic, ValueSetOrigin valueSetOrigin,
+    private List<String> valueList(String fieldRealName, Logic logic, LegalOrigin legalOrigin,
                                    String[] valueSet, String sql, String[] sqlParams, String appendSql,
                                    String[] refRetSetFieldName) {
         List<String> valueList = new ArrayList<>();
 
         if (Arrays.stream(refRetSetFieldName).count() == 0) {
             //如果依赖字段为空 说明不依赖任其他字段的值 则基于单字段判定即可
-            if (valueSetOrigin.equals(ValueSetOrigin.FIXED_VALUE)) {
+            if (legalOrigin.equals(LegalOrigin.FIXED)) {
                 valueList = Arrays.stream(valueSet).collect(Collectors.toList());
             }
         } else {
@@ -342,7 +342,7 @@ public class FieldCheckServiceImpl implements FieldCheckService {
      * 记录器
      */
     private void logger(Object obj, TypeCheckRule rule, String fieldRealName, Logic logic,
-                        ValueSetOrigin valueSetOrigin, String[] valueSet, String sql, String[] sqlParams,
+                        LegalOrigin legalOrigin, String[] valueSet, String sql, String[] sqlParams,
                         String appendSql, String[] refRetSetFieldName) {
       /*  涉及字段[{}] 字段值[{}] " +
         "\n =>逻辑运算符[{}]" +
@@ -350,7 +350,7 @@ public class FieldCheckServiceImpl implements FieldCheckService {
                 "\n =>静态值集[{}] " +
                 "\n =>动态值集[{}] " +
                 "\n =>sql[{}] */
-        log.info(FEILD_ENTRACE_LOG_MSG, null, obj, valueSetOrigin, valueSet, null, sql);
+        log.info(FEILD_ENTRACE_LOG_MSG, null, obj, legalOrigin, valueSet, null, sql);
     }
 
 

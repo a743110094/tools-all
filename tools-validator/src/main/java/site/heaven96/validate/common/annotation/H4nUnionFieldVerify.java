@@ -2,8 +2,8 @@ package site.heaven96.validate.common.annotation;
 
 
 import site.heaven96.validate.common.annotation.mutil.H4nFieldRequireVerifies;
+import site.heaven96.validate.common.enums.LegalOrigin;
 import site.heaven96.validate.common.enums.RequireRule;
-import site.heaven96.validate.common.enums.ValueSetOrigin;
 import site.heaven96.validate.common.validtor.FieldRequireValidtor;
 
 import javax.validation.Constraint;
@@ -66,7 +66,7 @@ public @interface H4nUnionFieldVerify {
      * 值集来源
      * //TODO 基于此分路判断
      */
-    ValueSetOrigin valueSetOrigin() default ValueSetOrigin.FIXED_VALUE;
+    LegalOrigin valueSetOrigin() default LegalOrigin.FIXED;
 
     /**
      * 值集

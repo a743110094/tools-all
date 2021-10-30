@@ -3,7 +3,8 @@ package site.heaven96.validate.util;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import site.heaven96.validate.common.enums.ValueSetOrigin;
+import site.heaven96.validate.common.enums.LegalOrigin;
+import site.heaven96.validate.iface.check.obj.ObjectChecker;
 
 /**
  * 自动选择实用程序
@@ -27,14 +28,14 @@ public class AutoChooseUtil{
      *
      * @param vso 值集来源
      * @param vs  值集
-     * @see site.heaven96.validate.iface.check.obj.AbstractObjCheck
+     * @see ObjectChecker
      * @since 0.0.2
      * @deprecated
      */
     @Deprecated
-    public static ValueSetOrigin valueSetOrigin(ValueSetOrigin vso, String[] vs) {
+    public static LegalOrigin valueSetOrigin(LegalOrigin vso, String[] vs) {
         //默认自动判断 但指定的优先级更高
-        if (ObjectUtil.notEqual(vso, ValueSetOrigin.AUTO)) {
+        if (ObjectUtil.notEqual(vso, LegalOrigin.AUTO)) {
             return vso;
         }
         //Auto choose vs Origin
@@ -43,17 +44,17 @@ public class AutoChooseUtil{
         final int length = StrUtil.length(trim);
         if (size == 0 || size > 1) {
             //值集为空或者大于一个值 为固定值判断模式
-            return ValueSetOrigin.FIXED_VALUE;
+            return LegalOrigin.FIXED;
         } else {
             if (length > 1 && trim.charAt(0) == POUND ) {
                 //#开头 但不仅仅只有# 为取其他属性值
-                return ValueSetOrigin.DYNAMIC_SPECIFIED_VALUE;
+                return LegalOrigin.DYNAMIC;
             }
             if (length > 7 && StrUtil.startWithIgnoreCase(trim, SELECT)) {
                 //SELECT 开头但不仅仅只有这个一个单词 取SQL
-                return ValueSetOrigin.SQL_RESULTS;
+                return LegalOrigin.SQL;
             }
         }
-        return ValueSetOrigin.FIXED_VALUE;
+        return LegalOrigin.FIXED;
     }
 }

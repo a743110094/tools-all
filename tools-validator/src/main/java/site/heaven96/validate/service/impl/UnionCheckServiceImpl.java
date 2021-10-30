@@ -11,8 +11,8 @@ import site.heaven96.assertes.util.AssertUtil;
 import site.heaven96.validate.common.annotation.H4nCheck;
 import site.heaven96.validate.common.annotation.H4nUnionCheck;
 import site.heaven96.validate.common.enums.Condition;
+import site.heaven96.validate.common.enums.LegalOrigin;
 import site.heaven96.validate.common.enums.Logic;
-import site.heaven96.validate.common.enums.ValueSetOrigin;
 import site.heaven96.validate.service.UnionCheckService;
 import site.heaven96.validate.util.AutoChooseUtil;
 import site.heaven96.validate.util.FieldUtil;
@@ -60,7 +60,7 @@ public class UnionCheckServiceImpl implements UnionCheckService {
      */
     private boolean doCheck(Object o, H4nUnionCheck ck) {
         /** 值集来源 */
-        final ValueSetOrigin valueSetOrigin = AutoChooseUtil.valueSetOrigin(ck.valueSetOrigin(), ck.valueSet());
+        final LegalOrigin legalOrigin = AutoChooseUtil.valueSetOrigin(ck.valueSetOrigin(), ck.valueSet());
         return groupCheck(o, ck);
         //找结论（logic）
         //做判断
@@ -107,29 +107,15 @@ public class UnionCheckServiceImpl implements UnionCheckService {
         //冗余代码
         anFieldsIf.stream().forEach(
                 annotationFieldItem -> {
-                    H4nCheck check = annotationFieldItem.getH4nCheckAnnontation();
+                    H4nCheck check = annotationFieldItem.getH4nCheckAnnotation();
                     Field annotationField = annotationFieldItem.getField();
                     String targetFieldPath = check.field();
                     Logic logic = check.operator();
-                    String[] valueSet = check.valueSet();
+                    String[] valueSet = check.legal();
                     Condition condition = check.logic();
-                    Object targetFieldPathValue = null;
+                    Object targetFieldPathValue;
                     Object beanA = ReflectUtil.getFieldValue(o, annotationField.getName());
                     targetFieldPathValue = SpelUtil.get(targetFieldPath, beanA);
-                    /*{
-                        //创建ExpressionParser解析表达式
-                        ExpressionParser parser = new SpelExpressionParser();
-                        //SpEL表达式语法设置在parseExpression()入参内
-                        Expression exp = parser.parseExpression(targetFieldPath);
-                        //执行SpEL表达式，执行的默认Spring容器是Spring本身的容器：ApplicationContext
-                        StandardEvaluationContext ctx = new StandardEvaluationContext();
-                        //向容器内添加bean
-                        //Object beanA = ReflectUtil.getFieldValue(o, annotationField.getName());
-                        ctx.setRootObject(beanA);
-                        //getValue有参数ctx，从新的容器中根据SpEL表达式获取所需的值
-                        targetFieldPathValue = exp.getValue(ctx, Object.class);
-                        System.out.println(targetFieldPathValue);
-                    }*/
                     boolean b = FieldCheckServiceImpl.filedCheck(
                             targetFieldPathValue, logic, check.ignoreCase(), valueSet
                     );
@@ -154,13 +140,13 @@ public class UnionCheckServiceImpl implements UnionCheckService {
                 //冗余代码
                 anFieldsThen.stream().forEach(
                         annotationFieldItem -> {
-                            H4nCheck check = annotationFieldItem.getH4nCheckAnnontation();
+                            H4nCheck check = annotationFieldItem.getH4nCheckAnnotation();
                             Field annotationField = annotationFieldItem.getField();
                             String targetFieldPath = check.field();
                             Logic logic = check.operator();
-                            String[] valueSet = check.valueSet();
+                            String[] valueSet = check.legal();
                             Condition condition = check.logic();
-                            Object targetFieldPathValue = null;
+                            Object targetFieldPathValue;
                             Object beanA = ReflectUtil.getFieldValue(o, annotationField.getName());
                             targetFieldPathValue = SpelUtil.get(targetFieldPath, beanA);
                             if (!(targetFieldPathValue instanceof Collection)) {
@@ -216,20 +202,20 @@ public class UnionCheckServiceImpl implements UnionCheckService {
      * @date 2021/10/16
      */
     private class AnnotationField {
-        private H4nCheck h4nCheckAnnontation;
+        private H4nCheck h4nCheckAnnotation;
         private Field field;
 
-        public AnnotationField(H4nCheck h4nCheckAnnontation, Field field) {
-            this.h4nCheckAnnontation = h4nCheckAnnontation;
+        public AnnotationField(H4nCheck h4nCheckAnnotation, Field field) {
+            this.h4nCheckAnnotation = h4nCheckAnnotation;
             this.field = field;
         }
 
-        public H4nCheck getH4nCheckAnnontation() {
-            return h4nCheckAnnontation;
+        public H4nCheck getH4nCheckAnnotation() {
+            return h4nCheckAnnotation;
         }
 
-        public void setH4nCheckAnnontation(H4nCheck h4nCheckAnnontation) {
-            this.h4nCheckAnnontation = h4nCheckAnnontation;
+        public void setH4nCheckAnnotation(H4nCheck h4nCheckAnnotation) {
+            this.h4nCheckAnnotation = h4nCheckAnnotation;
         }
 
         public Field getField() {

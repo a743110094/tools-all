@@ -5,9 +5,9 @@ import cn.hutool.core.util.ReflectUtil;
 import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import lombok.extern.slf4j.Slf4j;
 import site.heaven96.validate.common.annotation.H4nFieldCheck;
+import site.heaven96.validate.common.enums.LegalOrigin;
 import site.heaven96.validate.common.enums.Logic;
 import site.heaven96.validate.common.enums.TypeCheckRule;
-import site.heaven96.validate.common.enums.ValueSetOrigin;
 import site.heaven96.validate.service.FieldCheckService;
 import site.heaven96.validate.service.impl.FieldCheckServiceImpl;
 import site.heaven96.validate.util.SqlExecutor;
@@ -28,7 +28,7 @@ public class H3cFieldValidtor implements ConstraintValidator<H4nFieldCheck, Obje
     private TypeCheckRule rule;
     private String fieldRealName;
     private Logic logic;
-    private ValueSetOrigin valueSetOrigin;
+    private LegalOrigin legalOrigin;
     private String[] valueSet;
     private String sql;
     private String[] sqlParams;
@@ -54,7 +54,7 @@ public class H3cFieldValidtor implements ConstraintValidator<H4nFieldCheck, Obje
         rule = constraintAnnotation.rule();
         fieldRealName = constraintAnnotation.columns();
         logic = constraintAnnotation.operator();
-        valueSetOrigin = constraintAnnotation.valueSetOrigin();
+        legalOrigin = constraintAnnotation.valueSetOrigin();
         valueSet = constraintAnnotation.valueSet();
         sql = constraintAnnotation.sql();
         sqlParams = constraintAnnotation.sqlParams();
@@ -97,7 +97,7 @@ public class H3cFieldValidtor implements ConstraintValidator<H4nFieldCheck, Obje
                 if (fieldCheckService == null) {
                     fieldCheckService = ReflectUtil.newInstance(FieldCheckServiceImpl.class);
                 }
-                return fieldCheckService.check(obj, rule, fieldRealName, logic, valueSetOrigin
+                return fieldCheckService.check(obj, rule, fieldRealName, logic, legalOrigin
                         , valueSet, sql, sqlParams, appendSql, refRetSetFieldName);
             }
         }

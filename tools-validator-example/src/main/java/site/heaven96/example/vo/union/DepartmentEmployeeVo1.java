@@ -43,33 +43,33 @@ public class DepartmentEmployeeVo1 implements Serializable {
     /**
      * 部门
      */
-    @H4nCheck(group = 1, logic = IF, field = "#this.name", operator = EQUALS, valueSet = {"管理部"})
-    @H4nCheck(group = 2, logic = IF, field = "#this.name", operator = EQUALS, valueSet = {"研发部"})
-    @H4nCheck(group = 3, logic = IF, field = "#this.name", operator = EQUALS, valueSet = {"行政部"})
-    @H4nCheck(group = 4, logic = IF, field = "#this.name", operator = EQUALS, valueSet = {"A部"})
-    @H4nCheck(group = 5, logic = IF, field = "#this.name", operator = EQUALS, valueSet = {"B部"})
-    @H4nCheck(group = 6, logic = IF, field = "#this.name", operator = EQUALS, valueSet = {"C部"})
-    @H4nCheck(group = 7, logic = IF, field = "#this.name", operator = EQUALS, valueSet = {"D部"})
-    @H4nCheck(group = 8, logic = IF, field = "#this.name", operator = EQUALS, valueSet = {"E部"})
-    @H4nCheck(group = 9, logic = IF, field = "#this.name", operator = EQUALS, valueSet = {"F部"})
-    @H4nCheck(group = 10, logic = IF, field = "#this.name", operator = EQUALS, valueSet = {"G部"})
-    @H4nCheck(group = 11, logic = IF, field = "#this.name", operator = EQUALS, valueSet = {"H部"})
+    @H4nCheck(group = 1, logic = IF, field = "#this.name", operator = EQUALS, legal = "管理部")
+    @H4nCheck(group = 2, logic = IF, field = "#this.name", operator = EQUALS, legal = "研发部")
+    @H4nCheck(group = 3, logic = IF, field = "#this.name", operator = EQUALS, legal = "行政部")
+    @H4nCheck(group = 4, logic = IF, field = "#this.name", operator = EQUALS, legal = "A部")
+    @H4nCheck(group = 5, logic = IF, field = "#this.name", operator = EQUALS, legal = "B部")
+    @H4nCheck(group = 6, logic = IF, field = "#this.name", operator = EQUALS, legal = "C部")
+    @H4nCheck(group = 7, logic = IF, field = "#this.name", operator = EQUALS, legal = "D部")
+    @H4nCheck(group = 8, logic = IF, field = "#this.name", operator = EQUALS, legal = "E部")
+    @H4nCheck(group = 9, logic = IF, field = "#this.name", operator = EQUALS, legal = "F部")
+    @H4nCheck(group = 10, logic = IF, field = "#this.name", operator = EQUALS, legal = "G部")
+    @H4nCheck(group = 11, logic = IF, field = "#this.name", operator = EQUALS, legal = "H部")
     @Valid
     private Department department;
     /**
      * 员工
      */
-    @H4nCheck(group = 1, logic = THEN, field = "#this[all].age", operator = GREATER_THAN, valueSet = {"40"})
-    @H4nCheck(group = 2, logic = THEN, field = "#this[all].age", operator = LESS_THAN, valueSet = {"30"})
-    @H4nCheck(group = 3, logic = THEN, field = "#this[all].age", operator = BETWEEN_AND, valueSet = {"[20,30]"})
-    @H4nCheck(group = 4, logic = THEN, field = "#this[all].age", operator = EQUALS, valueSet = {"18"})
-    @H4nCheck(group = 5, logic = THEN, field = "#this[all].age", operator = LESS_THAN, valueSet = {"20"})
-    @H4nCheck(group = 6, logic = THEN, field = "#this[all].age", operator = IN, valueSet = {"30", "40"})
-    @H4nCheck(group = 7, logic = THEN, field = "#this[all].age", operator = LESS_THAN_OR_EQUAL_TO, valueSet = {"60"})
-    @H4nCheck(group = 8, logic = THEN, field = "#this[all].age", operator = GREATER_THAN_OR_EQUALS, valueSet = {"30"})
+    @H4nCheck(group = 1, logic = THEN, field = "#this[all].age", operator = GREATER_THAN, legal = {"40"})
+    @H4nCheck(group = 2, logic = THEN, field = "#this[all].age", operator = LESS_THAN, legal = {"30"})
+    @H4nCheck(group = 3, logic = THEN, field = "#this[all].age", operator = BETWEEN_AND, legal = {"[20,30]"})
+    @H4nCheck(group = 4, logic = THEN, field = "#this[all].age", operator = EQUALS, legal = {"18"})
+    @H4nCheck(group = 5, logic = THEN, field = "#this[all].age", operator = LESS_THAN, legal = {"20"})
+    @H4nCheck(group = 6, logic = THEN, field = "#this[all].age", operator = IN, legal = {"30", "40"})
+    @H4nCheck(group = 7, logic = THEN, field = "#this[all].age", operator = LESS_THAN_OR_EQUAL_TO, legal = {"60"})
+    @H4nCheck(group = 8, logic = THEN, field = "#this[all].age", operator = GREATER_THAN_OR_EQUALS, legal = {"30"})
     @H4nCheck(group = 9, logic = THEN, field = "#this[all].name", operator = NOT_NULL)
     @H4nCheck(group = 10, logic = THEN, field = "#this[all].name", operator = HAS_TEXT)
-    @H4nCheck(group = 11, logic = THEN, field = "#this[all].dateOfBirth", operator = GREATER_THAN, valueSet = {"2020-01-01"})
+    @H4nCheck(group = 11, logic = THEN, field = "#this[all].dateOfBirth", operator = GREATER_THAN, legal = {"2020-01-01"})
     @Valid
     private List<Employee> employees;
 

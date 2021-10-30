@@ -1,9 +1,9 @@
 package site.heaven96.validate.common.annotation;
 
 
+import site.heaven96.validate.common.enums.LegalOrigin;
 import site.heaven96.validate.common.enums.Logic;
 import site.heaven96.validate.common.enums.TypeCheckRule;
-import site.heaven96.validate.common.enums.ValueSetOrigin;
 import site.heaven96.validate.common.validtor.H3cFieldValidtor;
 
 import javax.validation.Constraint;
@@ -64,7 +64,7 @@ public @interface H4nFieldCheck{
      *
      * @ValueSetOrigin.FIXED_VALUE //TODO 基于此分路判断
      */
-    ValueSetOrigin valueSetOrigin() default ValueSetOrigin.FIXED_VALUE;
+    LegalOrigin valueSetOrigin() default LegalOrigin.FIXED;
 
     /**
      * 值集

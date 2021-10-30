@@ -34,12 +34,12 @@ public class DepartmentEmployeeVo3 {
     /**
      * 部门
      */
-    @H4nCheck(logic = IF, field = "#this.name", operator = EQUALS, valueSet = {"管理部"})
+    @H4nCheck(logic = IF, field = "#this.name", operator = EQUALS, legal = {"管理部"})
     private Department department;
     /**
      * 员工
      */
-    @H4nCheck(logic = THEN, field = "#this.age", operator = GREATER_THAN, valueSet = {"SELECT 40 FROM DUAL"})
+    @H4nCheck(logic = THEN, field = "#this.age", operator = GREATER_THAN, legal = {"SELECT 40 FROM DUAL"})
     @Valid
     private List<Employee> employees;
 }
