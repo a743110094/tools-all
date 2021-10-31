@@ -47,8 +47,7 @@ public class TbCheckerImpl extends AbObjectChecker<H4nTbCheck>{
         /*获得sql*/
         String sql = sqlBuilder(check, objClass);
         /*sql 参数*/
-        Object[] params = new Object[]{};
-        Arrays.stream(fieldNames).forEach(fieldName->{ArrayUtil.append(params,ReflectUtil.getFieldValue(beCheckedObj,fieldName));});
+        Object[] params = Arrays.stream(fieldNames).map(fieldName-> ReflectUtil.getFieldValue(beCheckedObj,fieldName)).toArray();
         /**
          * 执行SQL
          */
