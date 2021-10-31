@@ -38,7 +38,7 @@ public abstract class AbObjectChecker<A extends Annotation> implements ObjectChe
      * @param legal       法律上的
      * @return {@code Object[]}
      */
-    public Object getValSet(LegalOrigin legalOrigin, @NotNull String[] legal, Object obj) {
+    public Object getLegals(LegalOrigin legalOrigin, @NotNull String[] legal, Object obj) {
         //Calculate the legal origin
         origin = LegalOrigin.AUTO.equals(legalOrigin) ? this.getLegalOrigin(legalOrigin, legal) : legalOrigin;
         //Calculate the legal value(s)
@@ -57,10 +57,7 @@ public abstract class AbObjectChecker<A extends Annotation> implements ObjectChe
             }
             case REFLECT: {
                 //反射调用方法
-                int index = StrUtil.lastIndexOfIgnoreCase(firstLegal, ".");
-                final String className = firstLegal.substring(0, index);
-                final String methodName = firstLegal.substring(index);
-                return ReflectUtil.invoke(className, methodName, obj);
+
             }
             default: {
                 return null;

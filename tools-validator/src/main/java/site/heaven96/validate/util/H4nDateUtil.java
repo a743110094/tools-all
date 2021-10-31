@@ -16,7 +16,7 @@ import java.util.Date;
  * @author Heaven96
  * @date 2021/10/23
  */
-public class DateUtil {
+public class H4nDateUtil {
     /**
      * 判断是否是日期
      *

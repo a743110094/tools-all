@@ -32,13 +32,13 @@ public class DepartmentEmployeeVo2 {
     /**
      * 部门
      */
-    @H4nCheck(logic = IF, field = "#this.name", operator = EQUALS, legal = {"管理部"})
-    @H4nCheck(group = 2, field = "#this.name", operator = EQUALS, legal = {"管理部"})
+    @H4nCheck(logic = IF, spel = "#this.name", operator = EQUALS, legal = {"管理部"})
+    @H4nCheck(group = 2, spel = "#this.name", operator = EQUALS, legal = {"管理部"})
     private Department department;
     /**
      * 员工
      */
-    @H4nCheck(logic = THEN, field = "#this.age", operator = GREATER_THAN, legal = {"SELECT 40 FROM DUAL"})
-    @H4nCheck(group = 2, logic = THEN, field = "#this.role", operator = IN, legal = {"SELECT '开发者' FROM DUAL WHERE '开发者' = #{thisrole} "})
+    @H4nCheck(logic = THEN, spel = "#this.age", operator = GREATER_THAN, legal = {"SELECT 40 FROM DUAL"})
+    @H4nCheck(group = 2, logic = THEN, spel = "#this.role", operator = IN, legal = {"SELECT '开发者' FROM DUAL WHERE '开发者' = #{thisrole} "})
     private List<Employee> employees;
 }

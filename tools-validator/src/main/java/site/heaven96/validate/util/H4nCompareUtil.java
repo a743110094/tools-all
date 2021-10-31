@@ -15,15 +15,15 @@ import java.util.Arrays;
  */
 public class H4nCompareUtil {
 
-    private static AbstractCompareHandler getComparator() {
+    private synchronized static AbCompare getComparator() {
         //数字比较器
-        AbstractCompareHandler numberCompareHandler = new NumberCompareHandler();
+        AbCompare numberCompareHandler = new NumberCompare();
         //日期
-        AbstractCompareHandler dateCompareHandler = new DateCompareHandler();
+        AbCompare dateCompareHandler = new DateCompare();
         //字符串
-        AbstractCompareHandler stringCompareHandler = new StringCompareHandler();
+        AbCompare stringCompareHandler = new StringCompare();
         //对象
-        AbstractCompareHandler objectCompareHandler = new ObjectCompareHandler();
+        AbCompare objectCompareHandler = new ObjectCompare();
 
         numberCompareHandler.setNext(dateCompareHandler);
         dateCompareHandler.setNext(stringCompareHandler);

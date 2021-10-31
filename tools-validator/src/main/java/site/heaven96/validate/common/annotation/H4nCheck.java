@@ -40,11 +40,11 @@ public @interface H4nCheck{
     Condition logic() default Condition.NONE;
 
     /**
-     * 字段
+     * SPEL表达式
      *
      * @return {@code String}
      */
-    String field();
+    String spel();
 
     /**
      * 序号 对应sql中的参数序号 最小为1

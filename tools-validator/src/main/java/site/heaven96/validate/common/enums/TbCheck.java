@@ -10,11 +10,16 @@ public enum TbCheck {
     /**
      * 唯一性约束
      */
-    UNIQUE_CHECK("唯一性约束"),
+    PRIMARY_KEY_CHECK("唯一性约束(主键约束)"),
     /**
      * 存在性约束
      */
-    EXIST_CHECK("存在性约束");
+    EXIST_CHECK("存在性约束"),
+    /**
+     * 存在,只
+     */
+    EXISTS_AND_UNIQUE("存在且唯一")
+    ;
 
     private String note;
 

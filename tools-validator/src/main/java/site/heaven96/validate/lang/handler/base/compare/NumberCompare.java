@@ -14,7 +14,7 @@ import java.nio.charset.StandardCharsets;
  * @author Heaven96
  * @date 2021/10/19
  */
-public class NumberCompareHandler extends AbstractCompareHandler {
+public class NumberCompare extends AbCompare {
     /**
      * 手柄
      * 处理请求

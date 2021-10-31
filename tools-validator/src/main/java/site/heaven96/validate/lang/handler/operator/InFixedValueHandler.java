@@ -1,13 +1,17 @@
 package site.heaven96.validate.lang.handler.operator;
 
 import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.ObjectUtil;
 import site.heaven96.assertes.common.exception.H4nBeforeValidateCheckException;
 import site.heaven96.assertes.util.AssertUtil;
 import site.heaven96.validate.common.enums.Logic;
-import site.heaven96.validate.util.DateUtil;
+import site.heaven96.validate.util.H4nDateUtil;
 
 import javax.validation.constraints.NotNull;
+import java.util.Arrays;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * 数字等于处理程序
@@ -45,10 +49,12 @@ public class InFixedValueHandler extends AbstractFixedValueHandler {
             //值集为空直接false
             return false;
         }
-        if (obj instanceof Number || obj instanceof String || DateUtil.isDate(obj)) {
+        Set<@NotNull Object> collect = Arrays.stream(valueSet).collect(Collectors.toSet());
+
+        if (obj instanceof Number || obj instanceof String || H4nDateUtil.isDate(obj)) {
             //只针对部分数据类型有效
             if (obj instanceof Number){
-
+            ///TODO 完成
             }
         }else{
             throw new H4nBeforeValidateCheckException(ILLEGAL_PARAMETERS_TYPE_ERR_MSG);

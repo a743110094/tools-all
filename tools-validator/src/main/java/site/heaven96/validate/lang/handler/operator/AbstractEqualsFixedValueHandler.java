@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
  */
 public abstract class AbstractEqualsFixedValueHandler extends AbstractFixedValueHandler {
 
-    protected static final String AE_HANDLER_NOT_MATCHES_ERR_MSG = "\n===> 指定Operator为Equals时，只能针对数字或者日期类进行比较，没有匹配到处理器";
+    protected static final String AE_HANDLER_NOT_MATCHES_ERR_MSG = "\n===> 指定Operator为Equals时，没有匹配到处理器";
 
 
     private AbstractEqualsFixedValueHandler nextAbstractEqualsHandler;

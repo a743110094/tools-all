@@ -66,6 +66,13 @@ public @interface H4nUnionCheck {
      */
     String sql() default "";
 
+    /**
+     * 反映
+     *
+     * @return {@link String}
+     */
+    String reflect() default "";
+
     String message() default "";
 
     Class<?>[] groups() default {};

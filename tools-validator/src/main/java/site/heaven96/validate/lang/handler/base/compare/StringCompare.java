@@ -12,7 +12,7 @@ import java.nio.charset.StandardCharsets;
  * @author Heaven96
  * @date 2021/10/19
  */
-public class StringCompareHandler extends AbstractCompareHandler {
+public class StringCompare extends AbCompare {
     /**
      * 处理请求
      * obj1 = obj2 返回 0 否则返回 -1

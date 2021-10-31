@@ -26,7 +26,7 @@ public enum Condition {
     /**
      * 然后
      */
-    THEN("然后", -3),
+    THEN("然后", -1),
     /**
      * 并列 然后
      */
@@ -34,7 +34,7 @@ public enum Condition {
     /**
      * 或者然后
      */
-    OR_THEN("然后", -1);
+    OR_THEN("然后", -3);
 
 
     /**

@@ -2,6 +2,7 @@ package site.heaven96.example.controller;
 
 
 import org.springframework.web.bind.annotation.*;
+import site.heaven96.example.entity.single.Customer;
 import site.heaven96.example.entity.single.Student;
 import site.heaven96.example.entity.single.Teacher;
 
@@ -46,6 +47,14 @@ public class SingleFieldCheckDemoController {
     @PostMapping("test2")
     public String test2(@RequestBody @Valid Teacher teacher) {
         return teacher.toString();
+    }
+
+
+    @PostMapping("test3")
+    public Customer test3(@RequestBody @Valid Customer customer){
+
+        return customer;
+
     }
 
 }

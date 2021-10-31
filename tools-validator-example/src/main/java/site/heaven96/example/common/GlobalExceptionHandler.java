@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import site.heaven96.assertes.common.exception.H4nBeforeValidateCheckException;
 import site.heaven96.example.result.Result;
 
+import javax.validation.ValidationException;
+
 
 /**
  * 全局异常处理程序
@@ -27,7 +29,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(H4nBeforeValidateCheckException.class)
     public Result h4nBeforeValidateCheckException(final H4nBeforeValidateCheckException e) {
         final String defaultMessage = e.getMessage();
-        return new Result().failed(HttpStatus.PRECONDITION_FAILED, "H4n参数验证前的预检查异常：" + defaultMessage);
+        return new Result().failed(HttpStatus.PRECONDITION_FAILED, "H4n参数验证前的预检查异常：" + defaultMessage );
     }
 
     /**
@@ -42,6 +44,20 @@ public class GlobalExceptionHandler {
         final String defaultMessage = e.getBindingResult().getGlobalError().getDefaultMessage();
         return new Result().failed(HttpStatus.PRECONDITION_FAILED, "请求参数验证失败：" + defaultMessage);
     }
+
+    /**
+     * 验证异常处理程序
+     * 捕获  MethodArgumentNotValidException 异常 参数验证异常
+     *
+     * @param e exception
+     * @return 响应结果
+     */
+    @ExceptionHandler(ValidationException.class)
+    public Result validationExceptionHandler(final ValidationException e) {
+        final String defaultMessage = e.getCause().getMessage();
+        return new Result().failed(HttpStatus.INTERNAL_SERVER_ERROR, "请求参数验证过程中出现异常：" + defaultMessage);
+    }
+
 
     /**
      * 异常处理程序 500 服务器内部错误

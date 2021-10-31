@@ -6,6 +6,7 @@ package site.heaven96.validate.util;
  * @author Heaven96
  * @date 2021/10/24
  */
+
 public class ComparableUtil {
 
     /**
@@ -18,6 +19,6 @@ public class ComparableUtil {
      * @since 0.0.8
      */
     public static boolean rangeCompare(Object obj){
-        return DateUtil.isDate(obj) || obj instanceof Number;
+        return H4nDateUtil.isDate(obj) || obj instanceof Number;
     }
 }

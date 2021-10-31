@@ -6,8 +6,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import site.heaven96.validate.common.annotation.H4nFieldCheck;
-import site.heaven96.validate.common.enums.LegalOrigin;
 
 @Getter
 @Setter
@@ -15,10 +13,6 @@ import site.heaven96.validate.common.enums.LegalOrigin;
 @ToString
 public class Student {
 
-    @H4nFieldCheck(
-            valueSetOrigin = LegalOrigin.FIXED,
-            valueSet = {"张三"},
-            message = "姓名的值必须在值集 {valueSet} 范围内 id = {id} #{id} ${id}")
     private String name;
     @TableId
     @TableField(value = "stu_id")

@@ -25,8 +25,8 @@ public class NumberEqualsFixedValueHandler extends AbstractEqualsFixedValueHandl
             return nextEqualsHandler().subHandle(obj, logic, standardVal);
         }
         //标准值
-        boolean standardValueIsNumber = obj instanceof Number;
-        if (!standardValueIsNumber) {
+        boolean objIsNumber = obj instanceof Number;
+        if (!objIsNumber) {
             //下一个处理器
             AssertUtil.isTrueThrowBeforeExp(nextEqualsHandler()!=null,AE_HANDLER_NOT_MATCHES_ERR_MSG);
             return nextEqualsHandler().subHandle(obj, logic, standardVal);

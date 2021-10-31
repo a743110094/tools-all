@@ -18,7 +18,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * 字段检查服务类
@@ -61,7 +60,7 @@ public class FieldCheckServiceImpl implements FieldCheckService {
      * @see {@filedCheck}
      */
     @Deprecated
-    public static boolean fun10(Object obj, Logic logic, String[] valueSet) {
+    public static boolean fun102(Object obj, Logic logic, String[] valueSet) {
         if (valueSet.length == 0) {
             return false;
         }
@@ -131,7 +130,7 @@ public class FieldCheckServiceImpl implements FieldCheckService {
      * @date 2021年10月23日 02:31:24
      */
     public static boolean filedCheck(Object obj, Logic logic, boolean ignoreCase, String[] valueSet) {
-        if (logic.isRequireValueSet() && ArrayUtil.isEmpty(valueSet)) {
+        if (logic.isAllowMultiLegalValue() && ArrayUtil.isEmpty(valueSet)) {
             return false;
         }
         switch (logic) {
@@ -232,7 +231,7 @@ public class FieldCheckServiceImpl implements FieldCheckService {
             case FIXED: {
                 //Assert.notNull(obj, 进行验证的值为空);
                 //遍历固定值集寻找字段值
-                flag = fun10(obj, logic, valueSet);
+                flag = filedCheck(obj, logic,false, valueSet);
                 break;
             }
             case DYNAMIC:
@@ -252,77 +251,7 @@ public class FieldCheckServiceImpl implements FieldCheckService {
         return flag;
     }
 
-    //TODO//TODO//TODO//TODO
-    public boolean check2(Object obj, TypeCheckRule rule, String fieldRealName, Logic logic, LegalOrigin legalOrigin, String[] valueSet, String sql, String[] sqlParams, String appendSql, String[] refRetSetFieldName) {
-        /** 打印日志 */
-        logger(obj, rule, fieldRealName, logic, legalOrigin, valueSet, sql, sqlParams, appendSql, refRetSetFieldName);
-        /** 验证结果 */
-        boolean flag = false;
-        /** 计算用于最后验证的值集合 */
-        List<String> valueList = new ArrayList<>();
 
-        switch (legalOrigin) {
-            case FIXED: {
-                //Assert.notNull(obj, 进行验证的值为空);
-                //遍历固定值集寻找字段值
-                flag = fun10(obj, logic, valueSet);
-                break;
-            }
-            case DYNAMIC:
-            case SQL: {
-                //TODO 推后 因为无法取到参数
-                //TODO 收不到动态参数 暂时
-                flag = fun20(obj, logic, sql);
-                break;
-                //throw new H4nBeforeValidateCheckException(FIELD_UNSUPPORT_NOW_ERR_MSG);
-            }
-            default: {
-                log.error(FEILD_UNDEFIND_VALUE_SET_ORIGIN_ERR_MSG);
-                throw new H4nBeforeValidateCheckException(FEILD_UNDEFIND_VALUE_SET_ORIGIN_ERR_MSG);
-            }
-        }
-        log.info("\n===> 字段级别检查,结果{}", flag);
-        return flag;
-    }
-
-    /**
-     * 值列表 计算用于同字段值进行比对的标准集合 //TODO//TODO//TODO//TODO
-     *
-     * @return {@code List<String>}
-     */
-    private List<String> valueList(String fieldRealName, Logic logic, LegalOrigin legalOrigin,
-                                   String[] valueSet, String sql, String[] sqlParams, String appendSql,
-                                   String[] refRetSetFieldName) {
-        List<String> valueList = new ArrayList<>();
-
-        if (Arrays.stream(refRetSetFieldName).count() == 0) {
-            //如果依赖字段为空 说明不依赖任其他字段的值 则基于单字段判定即可
-            if (legalOrigin.equals(LegalOrigin.FIXED)) {
-                valueList = Arrays.stream(valueSet).collect(Collectors.toList());
-            }
-        } else {
-            //如果依赖字段不为空 要基于其他字段来判断
-            //---------------------获取注解所在类
-            Class<?> className = null;
-            //TODO ...........
-
-            //---------------------获取注解所在类
-            /** 依赖字段数目 此处>=1 */
-            int refNum = refRetSetFieldName.length;
-            // for 依次计算各字段值
-            for (int i = 0; i < refNum; i++) {
-                /** 第 i 个字段 路径 */
-                String itemFieldPath = refRetSetFieldName[i].trim();
-                /** 一级一级按照小数点拆开 */
-                String[] itemFieldArray = itemFieldPath.split("\\.");
-                /**  第一级是否为collection */
-                boolean zeroLevelIsCollection = false;
-
-            }
-        }
-
-        return null;
-    }
 
     /**
      * Fun20
@@ -336,7 +265,7 @@ public class FieldCheckServiceImpl implements FieldCheckService {
     public boolean fun20(Object obj, Logic logic, String sql) {
         List<String> strings = SqlExecutor.selectStrs(sql);
         String[] objects = strings.toArray(new String[strings.size()]);
-        return fun10(obj, logic, objects);
+        return filedCheck(obj, logic,false, objects);
     }
 
     /**

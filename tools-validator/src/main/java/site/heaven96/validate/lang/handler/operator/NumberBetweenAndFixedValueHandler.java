@@ -2,6 +2,7 @@ package site.heaven96.validate.lang.handler.operator;
 
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.NumberUtil;
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import site.heaven96.assertes.util.AssertUtil;
 import site.heaven96.validate.common.enums.Logic;
@@ -9,6 +10,7 @@ import site.heaven96.validate.util.H4nCompareUtil;
 
 import javax.validation.constraints.NotNull;
 import java.nio.charset.StandardCharsets;
+import java.util.Collection;
 
 /**
  * 数字 介于 处理程序
@@ -36,6 +38,13 @@ public class NumberBetweenAndFixedValueHandler extends AbstractBetweenAndFixedVa
 
     @Override
     public boolean subHandle(Object obj, Logic logic, @NotNull Object[] valueSet) {
+        ///////////集合判定
+        boolean objIsColl = obj instanceof Collection;
+        if (objIsColl){
+            return subHandleForColl((Collection<Object>) obj,logic,valueSet);
+        }
+        /////////////////////////分割  下面为非集合判定
+
         boolean objIsNumber = NumberUtil.isNumber(StrUtil.str(obj, StandardCharsets.UTF_8));
         if (!objIsNumber) {
             AssertUtil.isTrueThrowBeforeExp(nextBetweenAndHandler() != null, BA_HANDLER_NOT_MATCHES_ERR_MSG);
@@ -51,6 +60,8 @@ public class NumberBetweenAndFixedValueHandler extends AbstractBetweenAndFixedVa
         AssertUtil.isFalseThrowBeforeExp(commaIndex == -1, NB_MIDDLE_INTERVAL_SYMBOL_IS_NOT_COMMA_ERR_MSG);
         final String minVal = exp.substring(1, commaIndex);
         final String maxVal = exp.substring(commaIndex + 1, exp.length() - 1);
+
+
         if (H4nCompareUtil.isLess(obj, minVal) || H4nCompareUtil.isGreater(obj, maxVal)) {
             //比最小值小 比最大值大
             return false;
@@ -58,4 +69,32 @@ public class NumberBetweenAndFixedValueHandler extends AbstractBetweenAndFixedVa
         //排除开区间 踩在区间上
         return (H4nCompareUtil.notEquals(obj, minVal) || lExp == 91) && (H4nCompareUtil.notEquals(obj, maxVal) || rExp == 93);
     }
+
+    private boolean subHandleForColl(Collection<Object> objs, Logic logic, @NotNull Object[] valueSet){
+        //TODO 改进 暂用 重复计算N次
+        return objs.stream().allMatch(obj-> {
+            boolean objIsNumber = NumberUtil.isNumber(StrUtil.str(obj, StandardCharsets.UTF_8));
+            if (!objIsNumber) {
+                AssertUtil.isTrueThrowBeforeExp(nextBetweenAndHandler() != null, BA_HANDLER_NOT_MATCHES_ERR_MSG);
+                return nextBetweenAndHandler().subHandle(obj, logic, valueSet);
+            }
+            final String exp = StrUtil.str(ArrayUtil.firstNonNull(valueSet), StandardCharsets.UTF_8).trim();//like [1,2)
+            AssertUtil.isTrueThrowBeforeExp(exp.length() > 3, StrUtil.format(NB_INTERVAL_EXPRESSION_ERR_MSG));
+            char lExp = exp.charAt(0);
+            AssertUtil.isTrueThrowBeforeExp((lExp == 40 || lExp == 91), StrUtil.format(NB_LEFT_INTERVAL_SYMBOL_IS_INVALID_ERR_MSG, lExp));
+            char rExp = exp.charAt(NumberUtil.max(0, (exp.length() - 1)));
+            AssertUtil.isTrueThrowBeforeExp((rExp == 41 || rExp == 93), StrUtil.format(NB_RIGHT_INTERVAL_SYMBOL_IS_INVALID_ERR_MSG, rExp));
+            int commaIndex = exp.indexOf(',');
+            AssertUtil.isFalseThrowBeforeExp(commaIndex == -1, NB_MIDDLE_INTERVAL_SYMBOL_IS_NOT_COMMA_ERR_MSG);
+            final String minVal = exp.substring(1, commaIndex);
+            final String maxVal = exp.substring(commaIndex + 1, exp.length() - 1);
+            if (H4nCompareUtil.isLess(obj, minVal) || H4nCompareUtil.isGreater(obj, maxVal)) {
+                //比最小值小 比最大值大
+                return false;
+            }
+            //排除开区间 踩在区间上
+            return (H4nCompareUtil.notEquals(obj, minVal) || lExp == 91) && (H4nCompareUtil.notEquals(obj, maxVal) || rExp == 93);
+        });
+    }
+
 }

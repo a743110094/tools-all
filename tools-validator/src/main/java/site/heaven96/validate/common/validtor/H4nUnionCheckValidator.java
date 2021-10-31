@@ -15,8 +15,8 @@ import javax.validation.ConstraintValidatorContext;
  * @date 2021/10/13
  */
 public class H4nUnionCheckValidator implements ConstraintValidator<H4nUnionCheck, Object> {
-    H4nUnionCheck ca = null;
-    UnionCheckService service = null;
+    H4nUnionCheck ca;
+    UnionCheckService service;
 
     @Override
     public void initialize(H4nUnionCheck constraintAnnotation) {

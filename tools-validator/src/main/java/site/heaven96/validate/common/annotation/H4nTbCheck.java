@@ -1,15 +1,16 @@
 package site.heaven96.validate.common.annotation;
 
-import site.heaven96.validate.common.annotation.mutil.H4nTbChecks;
 import site.heaven96.validate.common.enums.TbCheck;
-import site.heaven96.validate.common.validtor.H3cTbCheckValidtor;
+import site.heaven96.validate.common.validtor.H4nTbCheckValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
+import java.lang.annotation.Documented;
 import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
@@ -21,8 +22,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  */
 @Target({TYPE})
 @Retention(RUNTIME)
-@Constraint(validatedBy = H3cTbCheckValidtor.class)
-@Repeatable(H4nTbChecks.class)
+@Constraint(validatedBy = H4nTbCheckValidator.class)
+@Repeatable(H4nTbCheck.List.class)
 public @interface H4nTbCheck {
 
     /**
@@ -46,14 +47,21 @@ public @interface H4nTbCheck {
      * @return {@code String}
      */
     @Deprecated
-    String tableName();
+    String table() default "";
 
     /**
      * Bean属性名称 默认指定这个 构造器会自动转下划线
      *
      * @return {@code String}
      */
-    String[] propertyNames();
+    String[] fieldName();
+
+    /**
+     * 实字段名
+     *
+     * @return {@code String[]}
+     */
+    String[] columnName() default {};
 
     /**
      * 追加SQL   用户自定义的sql，追加在拼接好的sql之后
@@ -61,14 +69,6 @@ public @interface H4nTbCheck {
      * @return {@code String}
      */
     String appendSql() default "";
-
-
-    /**
-     * 实字段名
-     *
-     * @return {@code String[]}
-     */
-    String[] realFieldName() default {};
 
 
     /**
@@ -82,4 +82,10 @@ public @interface H4nTbCheck {
 
     Class<? extends Payload>[] payload() default {};
 
+    @Target({TYPE})
+    @Retention(RUNTIME)
+    @Documented
+    @interface List {
+        H4nTbCheck[] value();
+    }
 }

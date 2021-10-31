@@ -3,7 +3,7 @@ package site.heaven96.validate.lang.handler.base.compare;
 import cn.hutool.core.util.ObjectUtil;
 import site.heaven96.assertes.common.exception.H4nBeforeValidateCheckException;
 
-public class ObjectCompareHandler extends AbstractCompareHandler {
+public class ObjectCompare extends AbCompare {
     /**
      * 处理请求
      * obj1 < obj2 返回 -1  obj1 = obj2 返回 0 obj1 > obj2返回 1

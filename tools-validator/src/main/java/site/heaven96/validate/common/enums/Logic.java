@@ -12,11 +12,11 @@ public enum Logic {
     /**
      * 等于 .
      */
-    EQUALS("SQL执行结果与给定结果集的第一个值匹配", true),
+    EQUALS("SQL执行结果与给定结果集的第一个值匹配", false),
     /**
      * 不等于 .
      */
-    NOT_EQUALS("SQL执行结果与给定结果集的第一个值不匹配", true),
+    NOT_EQUALS("SQL执行结果与给定结果集的第一个值不匹配", false),
     /**
      * 在其中
      */
@@ -28,23 +28,23 @@ public enum Logic {
     /**
      * 大于
      */
-    GREATER_THAN("SQL执行结果必须是数字，大于结果集第一个值，若执行返回null，默认Integer最小值", true),
+    GREATER_THAN("SQL执行结果必须是数字，大于结果集第一个值，若执行返回null，默认Integer最小值", false),
     /**
      * 大于等于
      */
-    GREATER_THAN_OR_EQUALS("SQL执行结果必须是数字，大于等于结果集第一个值，若执行返回null，默认Integer最小值", true),
+    GREATER_THAN_OR_EQUALS("SQL执行结果必须是数字，大于等于结果集第一个值，若执行返回null，默认Integer最小值", false),
     /**
      * 小于
      */
-    LESS_THAN("SQL执行结果必须是数字/日期，小于结果集第一个非空值，若执行ValueSet为null，默认Integer最大值", true),
+    LESS_THAN("SQL执行结果必须是数字/日期，小于结果集第一个非空值，若执行ValueSet为null，默认Integer最大值", false),
     /**
      * 小于等于
      */
-    LESS_THAN_OR_EQUAL_TO("SQL执行结果必须是数字/日期，小于等于结果集第一个非空值，若执行ValueSet为null，默认Integer最大值", true),
+    LESS_THAN_OR_EQUAL_TO("SQL执行结果必须是数字/日期，小于等于结果集第一个非空值，若执行ValueSet为null，默认Integer最大值", false),
     /**
      * 在范围内 通过valueSet表示区间开  闭 .
      */
-    BETWEEN_AND("在范围内", true),
+    BETWEEN_AND("在范围内", false),
     /**
      * 为空 .
      */
@@ -67,21 +67,25 @@ public enum Logic {
      */
     private final String note;
 
-    private final boolean requireValueSet;
+    /**
+     * 允许合法值集<br>
+     * true-合法值集可以传入集合<br>false-不可以传入值集，只允许传入单个对象
+     */
+    private final boolean allowMultiLegalValue;
 
     /**
      * 逻辑运算符
      *
      * @param note            描述
-     * @param requireValueSet
+     * @param allowMultiLegalValue 允许合法值集
      */
-    Logic(String note, boolean requireValueSet) {
+    Logic(String note, boolean allowMultiLegalValue) {
         this.note = note;
-        this.requireValueSet = requireValueSet;
+        this.allowMultiLegalValue = allowMultiLegalValue;
     }
 
-    public boolean isRequireValueSet() {
-        return requireValueSet;
+    public boolean isAllowMultiLegalValue() {
+        return allowMultiLegalValue;
     }
 
     /**

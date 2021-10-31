@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import site.heaven96.validate.common.annotation.H4nTbCheck;
 import site.heaven96.validate.common.enums.TbCheck;
 import site.heaven96.validate.common.factory.H3cValidtorFactory;
+import site.heaven96.validate.imp.check.enums.ObjectCheckModel;
+import site.heaven96.validate.imp.check.obj.ObjectCheckerFactory;
 import site.heaven96.validate.service.H3cWmsValidateService;
 
 import javax.validation.ConstraintValidator;
@@ -17,40 +19,12 @@ import javax.validation.ConstraintValidatorContext;
  * @date 2021/09/30
  */
 @Slf4j
-public class H3cTbCheckValidtor implements ConstraintValidator<H4nTbCheck, Object> {
-    /**
-     * 约束类型
-     */
-    private TbCheck check;
-    /**
-     * 模式
-     */
-    private String schema;
-
-    /**
-     * 表名
-     */
-    private String table;
-
-    /**
-     * Java属性名称
-     */
-    private String[] fields;
-
-    /**
-     * 表字段名称
-     */
-    private String[] columns;
-
-    /**
-     * 追加SQL
-     */
-    private String appendSql;
+public class H4nTbCheckValidator implements ConstraintValidator<H4nTbCheck, Object> {
 
     /**
      * H3C WMS验证服务
      */
-    private H3cWmsValidateService h3cWmsValidateService;
+    private H4nTbCheck h4nTbCheck;
 
     /**
      * Initializes the validator in preparation for
@@ -63,20 +37,12 @@ public class H3cTbCheckValidtor implements ConstraintValidator<H4nTbCheck, Objec
      * <p>
      * The default implementation is a no-op.
      *
-     * @param ca annotation instance for a given constraint declaration
+     * @param check annotation instance for a given constraint declaration
      */
     @Override
-    public void initialize(H4nTbCheck ca) {
-        schema = ca.schema();
-        table = ca.tableName();
-        fields = ca.propertyNames();
-        columns = ca.realFieldName();
-        check = ca.check();
-        appendSql = ca.appendSql();
-        if (h3cWmsValidateService == null) {
-            h3cWmsValidateService = H3cValidtorFactory.getInstance("H3cWmsValidateService");
-        }
-        ConstraintValidator.super.initialize(ca);
+    public void initialize(H4nTbCheck check) {
+        h4nTbCheck = check ;
+        ConstraintValidator.super.initialize(check);
     }
 
     /**
@@ -85,7 +51,8 @@ public class H3cTbCheckValidtor implements ConstraintValidator<H4nTbCheck, Objec
      * <p>
      * This method can be accessed concurrently, thread-safety must be ensured
      * by the implementation.
-     *
+     * 实现验证逻辑。 value状态不得改变。
+     * 该方法可以并发访问，必须通过实现来保证线程安全。
      * @param value   object to validate
      * @param context context in which the constraint is evaluated
      * @return {@code false} if {@code value} does not pass the constraint
@@ -102,7 +69,7 @@ public class H3cTbCheckValidtor implements ConstraintValidator<H4nTbCheck, Objec
      * @return boolean
      */
     private boolean doValid(Object obj) {
-        return h3cWmsValidateService.tbValidator(check, obj, schema, table, fields, columns, appendSql);
+        return ObjectCheckerFactory.getInstance(ObjectCheckModel.TB_CHECK).check(h4nTbCheck,obj);
     }
 
 

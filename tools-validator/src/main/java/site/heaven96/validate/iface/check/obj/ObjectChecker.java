@@ -9,6 +9,7 @@ import java.lang.annotation.Annotation;
 import java.util.Objects;
 
 /**
+ * 对象检查程序
  * 对象检查
  *
  * @author lgw3488

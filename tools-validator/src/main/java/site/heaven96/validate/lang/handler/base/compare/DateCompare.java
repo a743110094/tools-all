@@ -4,6 +4,7 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
 import lombok.extern.slf4j.Slf4j;
 import site.heaven96.assertes.util.AssertUtil;
+import site.heaven96.validate.util.H4nDateUtil;
 
 import java.util.Date;
 
@@ -14,7 +15,7 @@ import java.util.Date;
  * @date 2021/10/19
  */
 @Slf4j(topic = "==> H4n日期比较器 <==")
-public class DateCompareHandler extends AbstractCompareHandler {
+public class DateCompare extends AbCompare {
     /**
      * 处理请求
      * 如果date1 < date2，返回数小于0，date1==date2返回0，date1 > date2 大于0
@@ -26,9 +27,9 @@ public class DateCompareHandler extends AbstractCompareHandler {
      */
     @Override
     public int handle(Object obj1, Object obj2, boolean ignoreCase) {
-        if (site.heaven96.validate.util.DateUtil.isDate(obj1)){
+        if (H4nDateUtil.isDate(obj1)){
             final Date date1 = (Date) obj1;
-            final Date date2 = site.heaven96.validate.util.DateUtil.toDate(obj2);
+            final Date date2 = H4nDateUtil.toDate(obj2);
             AssertUtil.isTrueThrowBeforeExp(date2!=null,"\n===> 值{}不能被转换为日期",obj2);
             return DateUtil.compare(date1,date2);
         }else {

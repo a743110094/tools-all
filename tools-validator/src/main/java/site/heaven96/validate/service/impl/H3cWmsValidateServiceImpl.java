@@ -240,7 +240,7 @@ public class H3cWmsValidateServiceImpl implements H3cWmsValidateService {
         log.info(TB_BEGIN_VALIDATE_NOTICE_INFO, tableName, check.getNote(), propertyNames);
         final boolean checkPass = paraChecker(propertyNames, realFieldName);
         Assert.isTrue(checkPass, TB_PARAMS_CHECK_ERR_MSG);
-        if (check.equals(TbCheck.UNIQUE_CHECK)) {
+        if (check.equals(TbCheck.PRIMARY_KEY_CHECK)) {
             return fun10(obj, schema, tableName, propertyNames, realFieldName, appendSql);
         } else if (check.equals(TbCheck.EXIST_CHECK)) {
             return fun20(obj, schema, tableName, propertyNames, realFieldName, appendSql);

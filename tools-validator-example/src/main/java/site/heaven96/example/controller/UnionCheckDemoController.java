@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import site.heaven96.example.vo.union.DepartmentEmployeeVo1;
 import site.heaven96.example.vo.union.DepartmentEmployeeVo2;
+import site.heaven96.example.vo.union.DepartmentEmployeeVo3;
 
 import javax.validation.Valid;
 
@@ -40,7 +41,7 @@ public class UnionCheckDemoController {
      * <p>
      * 若部门为管理部 员工必须大于40岁
      *
-     * @param vo1 代码1
+     * @param vo2 代码1
      * @return {@code Result<String>}
      * @mock {
      * "name":"sdas"
@@ -49,5 +50,10 @@ public class UnionCheckDemoController {
     @GetMapping("test2")
     public Object test2(@RequestBody @Valid DepartmentEmployeeVo2 vo2) {
         return vo2;
+    }
+
+    @GetMapping("test3")
+    public Object test3(@RequestBody @Valid DepartmentEmployeeVo3 vo3) {
+        return vo3;
     }
 }

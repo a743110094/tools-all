@@ -16,9 +16,9 @@ public abstract class AbstractFixedValueHandler {
 
     protected static final String NOT_NULL_MUST_NEXT_TO_NULL = "===>构造责任链错误，NOT_NULL处理器之后必须是NULL处理器";
 
-    protected static final String HAS_NO_TEXT_MUST_NEXT_TO_HAS_TEXT = "===>构造责任链错误，HAS_NO_TEXT处理器之后必须是HAS_TEXT处理器";
+    protected static final String HAS_NO_TEXT_MUST_NEXT_TO_HAS_TEXT = "===>构造的责任链错误，HAS_NO_TEXT处理器之后必须是HAS_TEXT处理器";
 
-    protected static final String NOT_EQUALS_MUST_NEXT_TO_EQUALS = "===>构造责任链错误，NOT_EQUALS处理器之后必须是EQUALS处理器";
+    protected static final String NOT_EQUALS_MUST_NEXT_TO_EQUALS = "===>构造的责任链错误，NOT_EQUALS处理器之后必须是EQUALS处理器";
 
     private volatile boolean ignoreCase;
 

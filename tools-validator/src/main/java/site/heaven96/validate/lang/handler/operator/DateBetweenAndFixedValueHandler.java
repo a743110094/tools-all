@@ -3,8 +3,10 @@ package site.heaven96.validate.lang.handler.operator;
 import cn.hutool.core.util.ArrayUtil;
 import site.heaven96.assertes.util.AssertUtil;
 import site.heaven96.validate.common.enums.Logic;
+import site.heaven96.validate.util.H4nDateUtil;
 
 import javax.validation.constraints.NotNull;
+import java.util.Collection;
 
 /**
  * 数字 介于 处理程序
@@ -20,7 +22,7 @@ public class DateBetweenAndFixedValueHandler extends AbstractBetweenAndFixedValu
      * 数字 介于 处理程序 obj 必须介于值集第一个非空元素表达式 表达的值域范围 之间
      * 例如：
      * obj：1  valueSet {"","[0,1]"} 是合法的
-     *
+     * //TODO 对集合的处理需要优化
      * @param obj      OBJ
      * @param logic    运算符
      * @param valueSet 值集
@@ -28,9 +30,8 @@ public class DateBetweenAndFixedValueHandler extends AbstractBetweenAndFixedValu
      */
     @Override
     public boolean subHandle(Object obj, Logic logic, @NotNull Object[] valueSet) {
-        boolean objIsDate = site.heaven96.validate.util.DateUtil.isDate(obj);
+        boolean objIsDate = H4nDateUtil.isDate(obj);
         if (!objIsDate) {
-            AssertUtil.isTrueThrowBeforeExp(nextBetweenAndHandler() != null, BA_HANDLER_NOT_MATCHES_ERR_MSG);
             return nextBetweenAndHandler().subHandle(obj, logic, valueSet);
         }
         if (ArrayUtil.isEmpty(valueSet)) {
@@ -38,4 +39,5 @@ public class DateBetweenAndFixedValueHandler extends AbstractBetweenAndFixedValu
         }
         return false;
     }
+
 }

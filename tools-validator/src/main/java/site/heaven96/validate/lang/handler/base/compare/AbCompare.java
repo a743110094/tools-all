@@ -6,15 +6,15 @@ package site.heaven96.validate.lang.handler.base.compare;
  * @author Heaven96
  * @date 2021/10/19
  */
-public abstract class AbstractCompareHandler {
+public abstract class AbCompare {
     public static final String FCV_NO_MATCHED_HANDLER_ERR_MSG = "\n===>没有匹配到Compare比较处理器";
-    private AbstractCompareHandler next;
+    private AbCompare next;
 
-    public AbstractCompareHandler getNext() {
+    public AbCompare getNext() {
         return next;
     }
 
-    public void setNext(AbstractCompareHandler next) {
+    public void setNext(AbCompare next) {
         this.next = next;
     }
 
